@@ -2,6 +2,9 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
+import { ThemeProvider } from "@/components/theme-provider"
+import ModeToggle from "@/components/ModeToggle"
+import NavBar from "@/components/NavBar"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,15 +23,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          {children}
-        </main>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NavBar />
+          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   )
