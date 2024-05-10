@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,6 +27,7 @@ const FormSchema = z.object({
 
 export function FreeAnswer({ question }: FreeAnswerProps) {
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -36,6 +36,7 @@ export function FreeAnswer({ question }: FreeAnswerProps) {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(JSON.stringify(data, null, 2))
     setSubmittedAnswer(data.answer)
+    setIsSubmitted(true)
   }
 
   return (
@@ -62,16 +63,18 @@ export function FreeAnswer({ question }: FreeAnswerProps) {
         </form>
       </Form>
 
-      <Evaluation
-        score={9999}
-        userAnswer={submittedAnswer}
-        correctAnswer={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        }
-        evaluationReason={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
-        }
-      />
+      {isSubmitted && (
+        <Evaluation
+          score={9999}
+          userAnswer={submittedAnswer}
+          correctAnswer={
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          }
+          evaluationReason={
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
+          }
+        />
+      )}
     </div>
   )
 }

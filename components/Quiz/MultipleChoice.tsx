@@ -27,6 +27,7 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   answerOptions,
 }) => {
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
   const FormSchema = useMemo(() => {
     return z.object({
@@ -44,6 +45,7 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
     console.log(JSON.stringify(data, null, 2))
 
     setSubmittedAnswer(data.answer)
+    setIsSubmitted(true)
   }
 
   return (
@@ -91,12 +93,14 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
         </form>
       </Form>
 
-      <Evaluation
-        score={9999}
-        userAnswer={submittedAnswer}
-        correctAnswer={answerOptions[0]}
-        evaluationReason="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
-      />
+      {isSubmitted && (
+        <Evaluation
+          score={9999}
+          userAnswer={submittedAnswer}
+          correctAnswer={answerOptions[0]}
+          evaluationReason="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
+        />
+      )}
     </div>
   )
 }
