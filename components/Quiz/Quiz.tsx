@@ -3,10 +3,6 @@ import React from "react"
 import MultipleChoice from "@/components/Quiz/MultipleChoice"
 import FreeAnswer from "@/components/Quiz/FreeAnswer"
 
-interface QuizProps {
-  // Define your props here
-}
-
 const placeholderMultipleChoiceAnswers = [
   "anslankfds swer 1",
   "anssdflmksdf sdfkdk d kds wer 2",
@@ -19,8 +15,12 @@ const placeholderMultipleChoiceQuestion =
 const placeholderFreeAnswerQuestion =
   "For what reason did EDM become popular in America?"
 
-export default function Quiz() {
+const placeholderURL = "https://www.youtube.com/watch?v=mG8UupGkbGo"
+
+export default function Quiz({ quizContent }: any) {
   // Add your component logic here
+
+  console.log("QuizComponent::quizContent", quizContent)
 
   return (
     <>

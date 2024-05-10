@@ -4,14 +4,6 @@ import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
 
 const openai = new OpenAI()
 
-interface QuizRequest {
-  videoId: string
-}
-
-interface CaptionsResponse {
-  script: string
-}
-
 const VideoRequest = z.object({
   videoId: z.string(),
 })
@@ -70,7 +62,16 @@ export async function POST(request: Request) {
 
   const { quizContent } = await fetchQuizContent(script)
 
+  let quizContentJson = {}
+  try {
+    quizContentJson = JSON.parse(quizContent)
+  } catch (err) {
+    return Response.json({
+      error: err,
+    })
+  }
+
   return Response.json({
-    quizContent: quizContent,
+    quizContent: quizContentJson,
   })
 }
