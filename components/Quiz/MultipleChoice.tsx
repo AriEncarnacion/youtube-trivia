@@ -1,7 +1,20 @@
 "use client"
-import React from "react"
-import { Label } from "@/components/ui/label"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useMemo } from "react"
 
 interface MultipleChoiceProps {
   question: string
@@ -12,50 +25,65 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   question,
   answerOptions,
 }) => {
-  const onSelectOption = (option: string) => {
-    console.log(option)
+  const FormSchema = useMemo(() => {
+    return z.object({
+      answer: z.string().refine((value) => answerOptions.includes(value), {
+        message: "You need to select a valid option.",
+      }),
+    })
+  }, [answerOptions])
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  })
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(JSON.stringify(data, null, 2))
   }
 
-  // TODO: update the radio group to be wrapped in a FormControl
   return (
-    <div>
-      <RadioGroup defaultValue="comfortable">
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="default"
-            id="r1"
-            onClick={(e) => console.log(e)}
-          />
-          <Label htmlFor="r1">Default</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="comfortable"
-            id="r2"
-            onClick={(e) => console.log(e)}
-          />
-          <Label htmlFor="r2">Comfortable</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="compact"
-            id="r3"
-            onClick={(e) => console.log(e)}
-          />
-          <Label htmlFor="r3">Compact</Label>
-        </div>
-      </RadioGroup>
-    </div>
-    // <div>
-    //   <h2>{question}</h2>
-    //   <ul>
-    //     {answerOptions.map((option, index) => (
-    //       <li key={index} onClick={() => onSelectOption(option)}>
-    //         {option}
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="answer"
+          render={({ field }) => (
+            <FormItem className="space-y-5">
+              <FormLabel>{question}</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-3"
+                >
+                  {answerOptions.map((option, idx) => (
+                    <FormItem
+                      key={`formItem-${option}-${idx}`}
+                      className="flex items-center space-x-3 space-y-0"
+                    >
+                      <FormControl key={`formControl-${option}-${idx}`}>
+                        <RadioGroupItem
+                          key={`radioGroupItem-${option}-${idx}`}
+                          value={option}
+                        />
+                      </FormControl>
+                      <FormLabel
+                        key={`formLabel-${option}-${idx}`}
+                        className="font-normal"
+                      >
+                        {option}
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   )
 }
 
