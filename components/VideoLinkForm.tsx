@@ -20,13 +20,16 @@ const formSchema = z.object({
 })
 
 async function fetchCaptions(videoId: string): Promise<any> {
-  const response = await fetch(`http://localhost:3000/api/captionScraper`, {
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/captionScraper`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ videoId: videoId }),
     },
-    method: "POST",
-    body: JSON.stringify({ videoId: videoId }),
-  })
+  )
 
   const data = await response.json()
   return data
