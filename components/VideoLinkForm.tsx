@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   videoLink: z.string(),
@@ -33,6 +34,8 @@ async function fetchCaptions(videoId: string): Promise<any> {
 }
 
 const VideoLinkForm: React.FC = () => {
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,9 +47,11 @@ const VideoLinkForm: React.FC = () => {
     const url = new URL(values.videoLink)
     const videoId = url.searchParams.get("v")
 
-    fetchCaptions(videoId as string).then((captions) => {
-      console.log(captions)
-    })
+    router.push("/quiz")
+
+    // fetchCaptions(videoId as string).then((captions) => {
+    //   console.log(captions)
+    // })
   }
 
   return (
