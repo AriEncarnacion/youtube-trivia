@@ -16,8 +16,21 @@ import {
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-  videoLink: z.string().url(),
+  videoLink: z.string(),
 })
+
+async function fetchCaptions(videoId: string): Promise<any> {
+  const response = await fetch(`http://localhost:3000/api/captionScraper`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({ videoId: videoId }),
+  })
+
+  const data = await response.json()
+  return data
+}
 
 const VideoLinkForm: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -28,7 +41,12 @@ const VideoLinkForm: React.FC = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    const url = new URL(values.videoLink)
+    const videoId = url.searchParams.get("v")
+
+    fetchCaptions(videoId as string).then((captions) => {
+      console.log(captions)
+    })
   }
 
   return (
@@ -41,10 +59,13 @@ const VideoLinkForm: React.FC = () => {
             <FormItem>
               <FormLabel>YouTube Video Link</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
-                Paste the video you want to be quizzed on here.
+                Must be in youtube.com format, not youtu.be
               </FormDescription>
               <FormMessage />
             </FormItem>
