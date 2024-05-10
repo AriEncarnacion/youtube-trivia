@@ -25,7 +25,7 @@ const FormSchema = z.object({
   answer: z.string(),
 })
 
-export function FreeAnswer({ question }: FreeAnswerProps) {
+export default function FreeAnswer({ question }: FreeAnswerProps) {
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
