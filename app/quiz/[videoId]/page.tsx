@@ -23,7 +23,10 @@ export default async function QuizPage({
 }) {
   const quizContent = await getQuizContent(params.videoId)
 
-  console.log("QuizPage::quizContent", quizContent)
+  console.log(
+    "QuizPage::quizContent--should be api return result::",
+    quizContent,
+  )
 
   return <Quiz />
 }

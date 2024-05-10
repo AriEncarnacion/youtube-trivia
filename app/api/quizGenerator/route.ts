@@ -1,4 +1,8 @@
 import { z } from "zod"
+import OpenAI from "openai"
+import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
+
+const openai = new OpenAI()
 
 interface QuizRequest {
   videoId: string
@@ -27,6 +31,28 @@ async function fetchCaptions(videoId: string): Promise<any> {
   return response.json()
 }
 
+async function fetchQuizContent(script: string): Promise<any> {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo-0125",
+    messages: [
+      {
+        role: "system",
+        content: quizSystemContent,
+      },
+      { role: "user", content: script },
+    ],
+
+    response_format: { type: "json_object" },
+    logit_bias: {
+      "5061": -100, // \t token
+      "1734": -100, // \n token
+    },
+  })
+
+  console.log(completion.choices)
+  return { quizContent: completion.choices[0].message.content }
+}
+
 export async function POST(request: Request) {
   const data = await request.json()
 
@@ -42,9 +68,9 @@ export async function POST(request: Request) {
 
   const { script } = await fetchCaptions(data.videoId)
 
-  
+  const { quizContent } = await fetchQuizContent(script)
 
   return Response.json({
-    script: script,
+    quizContent: quizContent,
   })
 }
