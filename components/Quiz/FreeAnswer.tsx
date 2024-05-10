@@ -34,7 +34,6 @@ export default function FreeAnswer({ question }: FreeAnswerProps) {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
     setSubmittedAnswer(data.answer)
     setIsSubmitted(true)
   }

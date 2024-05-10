@@ -12,7 +12,7 @@ async function fetchCaptions(videoId: string) {
   return captions
 }
 
-function assembleScript(captions: Caption[]) {
+function assembleScript(captions: Caption[]): string {
   let script = ""
 
   captions.forEach((entry) => {
@@ -28,8 +28,6 @@ export async function POST(request: Request) {
   const captions = await fetchCaptions(data.videoId)
 
   const script = assembleScript(captions)
-
-  console.log(script)
 
   return Response.json({
     script,

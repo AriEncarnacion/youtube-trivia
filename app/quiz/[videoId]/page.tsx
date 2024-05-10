@@ -3,7 +3,7 @@ import React from "react"
 
 async function getQuizContent(videoId: string): Promise<any> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/captionScraper`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/quizGenerator`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -21,8 +21,6 @@ export default async function QuizPage({
 }: {
   params: { videoId: string }
 }) {
-  console.log("QuizPage::videoId", params.videoId)
-
   const quizContent = await getQuizContent(params.videoId)
 
   console.log("QuizPage::quizContent", quizContent)

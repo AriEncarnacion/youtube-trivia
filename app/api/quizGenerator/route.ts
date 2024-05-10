@@ -1,5 +1,17 @@
 import { z } from "zod"
 
+interface QuizRequest {
+  videoId: string
+}
+
+interface CaptionsResponse {
+  script: string
+}
+
+const VideoRequest = z.object({
+  videoId: z.string(),
+})
+
 async function fetchCaptions(videoId: string): Promise<any> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/captionScraper`,
@@ -15,20 +27,11 @@ async function fetchCaptions(videoId: string): Promise<any> {
   return response.json()
 }
 
-interface QuizRequest {
-  videoId: string
-}
+export async function POST(request: Request) {
+  const data = await request.json()
 
-const VideoRequest = z.object({
-  videoId: z.string(),
-})
-
-export default async function POST(request: Request) {
-  console.log("quizGenerator::POST::request", request)
-
-  const reqJson = await request.json()
   try {
-    VideoRequest.parse(reqJson)
+    VideoRequest.parse(data)
   } catch (err) {
     if (err instanceof z.ZodError) {
       return Response.json({
@@ -37,13 +40,11 @@ export default async function POST(request: Request) {
     }
   }
 
-  console.log("quizGenerator::POST::reqJson", reqJson)
+  const { script } = await fetchCaptions(data.videoId)
 
-  // const captions = await fetchCaptions(reqData.videoId)
+  
 
   return Response.json({
-    message: "Hello World",
-    request: request,
-    reqJson: reqJson,
+    script: script,
   })
 }

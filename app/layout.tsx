@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { createOpenAI } from "@ai-sdk/openai"
 import "./globals.css"
 import { Inter as FontSans } from "next/font/google"
 // import { cn } from "@/lib/utils"
@@ -6,10 +7,14 @@ import { ThemeProvider } from "@/components/theme-provider"
 // import ModeToggle from "@/components/ModeToggle"
 import NavBar from "@/components/NavBar"
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 })
+
+// const fontSans = FontSans({
+//   subsets: ["latin"],
+//   variable: "--font-sans",
+// })
 
 export const metadata: Metadata = {
   title: "Create Next App",

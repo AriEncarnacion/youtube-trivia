@@ -42,8 +42,6 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
-
     setSubmittedAnswer(data.answer)
     setIsSubmitted(true)
   }
