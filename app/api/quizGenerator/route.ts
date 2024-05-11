@@ -95,11 +95,21 @@ async function fetchQuizContent(script: string): Promise<any> {
     ],
   })
 
+  console.log(
+    "quizGenerator::entrypoint::fetchQuizContent()::completion",
+    completion,
+  )
+  console.log(
+    "quizGenerator::entrypoint::fetchQuizContent()::returnValue:",
+    completion.choices[0].message.tool_calls?.[0].function.arguments,
+  )
+
   return completion.choices[0].message.tool_calls?.[0].function.arguments
 }
 
 export async function POST(request: Request) {
   const data = await request.json()
+  console.log("quizGenerator::entrypoint::request", data)
 
   try {
     VideoRequest.parse(data)
@@ -113,14 +123,26 @@ export async function POST(request: Request) {
 
   const { script } = await fetchCaptions(data.videoId)
 
+  console.log("quizGenerator::entrypoint::script (post fetchCaptions):", script)
+
   const completion: string | undefined = await fetchQuizContent(script)
 
+  console.log("quizGenerator::entrypoint::completion (post openAI)", completion)
+
   if (!completion) {
+    console.log(
+      "quizGenerator::entrypoint::return_FAILURE::completion (in validation)",
+      completion,
+    )
     return Response.json({
       code: 500,
       error: "Error parsing JSON from OpenAI.",
     })
   } else {
+    console.log(
+      "quizGenerator::entrypoint::return_success::completion (in validation)",
+      completion,
+    )
     return Response.json({
       quizContent: JSON.parse(completion),
     })

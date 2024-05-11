@@ -23,6 +23,8 @@ export default async function QuizPage({
 }) {
   const { quizContent } = await getQuizContent(params.videoId)
 
+  console.log("QuizPage -- QUIZ CONTENT IS:", quizContent)
+
   return (
     <Quiz
       multipleChoiceQuestions={quizContent.multipleChoiceQuestions}
