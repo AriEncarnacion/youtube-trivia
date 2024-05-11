@@ -1,6 +1,8 @@
 import { z } from "zod"
 import OpenAI from "openai"
 import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
+import { unstable_noStore } from "next/cache"
+import { OpenAIStream, StreamingTextResponse } from "ai"
 
 const openai = new OpenAI()
 
@@ -8,30 +10,28 @@ const VideoRequest = z.object({
   videoId: z.string(),
 })
 
-async function fetchCaptions(videoId: string): Promise<any> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/captionScraper`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ videoId: videoId }),
-    },
-  )
+export async function POST(request: Request) {
+  const data = await request.json()
 
-  return response.json()
-}
+  try {
+    VideoRequest.parse(data)
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return Response.json({
+        error: err.errors,
+      })
+    }
+  }
 
-async function fetchQuizContent(script: string): Promise<any> {
-  const completion = await openai.chat.completions.create({
+  const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-0125",
+    stream: true,
     messages: [
       {
         role: "system",
         content: quizSystemContent,
       },
-      { role: "user", content: script },
+      { role: "user", content: data.script },
     ],
     tool_choice: "required",
     tools: [
@@ -96,58 +96,51 @@ async function fetchQuizContent(script: string): Promise<any> {
     ],
   })
 
-  console.log(
-    "quizGenerator::entrypoint::fetchQuizContent()::completion",
-    completion,
-  )
-  console.log(
-    "quizGenerator::entrypoint::fetchQuizContent()::returnValue:",
-    completion.choices[0].message.tool_calls?.[0].function.arguments,
-  )
+  const stream = OpenAIStream(response)
 
-  return completion.choices[0].message.tool_calls?.[0].function.arguments
+  return new StreamingTextResponse(stream)
 }
 
-export async function POST(request: Request) {
-  const data = await request.json()
-  console.log("quizGenerator::entrypoint::request", data)
+// export async function POST(request: Request) {
+//   unstable_noStore() //TODO: Remove for prod; doing to test timeout limits
 
-  try {
-    VideoRequest.parse(data)
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return Response.json({
-        error: err.errors,
-      })
-    }
-  }
+//   const data = await request.json()
+//   console.log("quizGenerator::entrypoint::request", data)
 
-  const { script } = await fetchCaptions(data.videoId)
+//   try {
+//     VideoRequest.parse(data)
+//   } catch (err) {
+//     if (err instanceof z.ZodError) {
+//       return Response.json({
+//         error: err.errors,
+//       })
+//     }
+//   }
 
-  console.log("quizGenerator::entrypoint::script (post fetchCaptions):", script)
+//   console.log("quizGenerator::entrypoint::script (post fetchCaptions):", script)
 
-  const completion: string | undefined = await fetchQuizContent(script)
+//   const completion: string | undefined = await fetchQuizContent(script)
 
-  console.log("quizGenerator::entrypoint::completion (post openAI)", completion)
+//   console.log("quizGenerator::entrypoint::completion (post openAI)", completion)
 
-  if (!completion) {
-    console.log(
-      "quizGenerator::entrypoint::return_FAILURE::completion (in validation)",
-      completion,
-    )
-    return Response.json({
-      code: 500,
-      error: "Error parsing JSON from OpenAI.",
-    })
-  } else {
-    console.log(
-      "quizGenerator::entrypoint::return_success::completion (in validation)",
-      completion,
-    )
-    return Response.json({
-      quizContent: JSON.parse(completion),
-    })
-  }
-}
+//   if (!completion) {
+//     console.log(
+//       "quizGenerator::entrypoint::return_FAILURE::completion (in validation)",
+//       completion,
+//     )
+//     return Response.json({
+//       code: 500,
+//       error: "Error parsing JSON from OpenAI.",
+//     })
+//   } else {
+//     console.log(
+//       "quizGenerator::entrypoint::return_success::completion (in validation)",
+//       completion,
+//     )
+//     return Response.json({
+//       quizContent: JSON.parse(completion),
+//     })
+//   }
+// }
 
 export const runtime = "edge"

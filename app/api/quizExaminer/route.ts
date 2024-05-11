@@ -1,6 +1,7 @@
 import OpenAI from "openai"
 import { z } from "zod"
 import { buildEvalSystemContent } from "@/ai/systemConfig/quizConfig"
+import { unstable_noStore } from "next/cache"
 
 const openai = new OpenAI()
 
@@ -58,6 +59,8 @@ async function getEvaluation(modelSystemContent: string) {
 }
 
 export async function POST(request: Request) {
+  unstable_noStore() //TODO: Remove for prod; doing to test timeout limits
+
   const data = await request.json()
 
   console.log("QuizExaminer::Data::", data)
