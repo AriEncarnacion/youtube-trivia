@@ -19,6 +19,7 @@ async function getEvaluation(modelSystemContent: string) {
         content: modelSystemContent,
       },
     ],
+    tool_choice: "required",
     tools: [
       {
         type: "function",

@@ -33,6 +33,7 @@ async function fetchQuizContent(script: string): Promise<any> {
       },
       { role: "user", content: script },
     ],
+    tool_choice: "required",
     tools: [
       {
         type: "function",
