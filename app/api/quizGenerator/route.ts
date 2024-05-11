@@ -41,7 +41,6 @@ async function fetchQuizContent(script: string): Promise<any> {
     },
   })
 
-  console.log(completion.choices)
   return { quizContent: completion.choices[0].message.content }
 }
 
@@ -64,7 +63,7 @@ export async function POST(request: Request) {
 
   let quizContentJson = {}
   try {
-    quizContentJson = JSON.parse(quizContent)
+    quizContentJson = JSON.parse(quizContent as string)
   } catch (err) {
     return Response.json({
       error: err,

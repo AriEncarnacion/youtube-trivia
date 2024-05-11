@@ -1,24 +1,41 @@
-import React from "react"
+"use client"
+import React, { useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import useSWR from "swr"
+import { quizFetcher } from "./api/quizHandler"
 
 interface EvaluationProps {
-  score: number
+  question: string
   userAnswer: string
   correctAnswer: string
-  evaluationReason: string
 }
 
-const Evaluation: React.FC<EvaluationProps> = ({
-  score,
+export default function Evaluation({
+  question,
   userAnswer,
   correctAnswer,
-  evaluationReason,
-}: EvaluationProps) => {
+}: EvaluationProps) {
+  const [score, setScore] = React.useState<number>()
+  const [evaluationReason, setEvaluationReason] = React.useState<string>()
+
+  const { data, error, isLoading } = useSWR(
+    { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
+    quizFetcher,
+  )
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Score: {score}</CardTitle>
+        {/* TODO: spice up by giving score colors based on score */}
+        <CardTitle>
+          Score:{" "}
+          {isLoading ? (
+            <h4>Loading...</h4>
+          ) : (
+            <>{data.response.evaluation.score}</>
+          )}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -35,12 +52,16 @@ const Evaluation: React.FC<EvaluationProps> = ({
 
           <Separator />
           <div>
-            <p>{evaluationReason}</p>
+            <p>
+              {isLoading ? (
+                <h4>Loading...</h4>
+              ) : (
+                <>{data.response.evaluation.reasoning}</>
+              )}
+            </p>
           </div>
         </div>
       </CardContent>
     </Card>
   )
 }
-
-export default Evaluation

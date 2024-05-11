@@ -24,30 +24,25 @@ export const buildEvalSystemContent = (
   correctAnswer: string,
 ) => {
   return `
-  You are responsible for evaluating an answer from a quiz. Your evaluation must have the following requirements:
+  You are responsible for grading the answer to a question on a quiz. The quiz question, user answer, and correct answer will be provided.
+  
+  Your grading must have the following requirements:
+  
+  Return requirements:
+  1. A score from 0 to 100, where 0 is completely incorrect and 100 is completely correct and comprehensive.
+  2. Score reasoning. Score Reasoning is an explanation on why the answer provided received the score it did based on the context of the question.
+  The user answer is compared to the correct answer
+  3. Use the question provided to get context of the subject matter, which can be used to influence the score.
+  
+  The grading must return all data in JSON format.
 
-Return requirements:
-1. A score from 0 to 100, where 0 is completely incorrect and 100 is completely correct and comprehensive.
-2. Score reasoning. Score Reasoning is an explanation on why the answer provided received the score it did based on the context of the question.
-The user answer is compared to the correct answer
-3. Use the question provided to get context of the subject matter, which can be used to influence the score.
+  Here is the question:
+  ${question}
 
-The evaluation must return all data in JSON format with the following categories: 
-1. Score
-2. Score Reasoning
+  Here is the user's answer:
+  ${userAnswer}
+
+  Here is the correct answer:
+  ${correctAnswer}
   `
 }
-
-export const evaluationSystemContent = `
-You are responsible for evaluating an answer from a quiz. Your evaluation must have the following requirements:
-
-Return requirements:
-1. A score from 0 to 100, where 0 is completely incorrect and 100 is completely correct and comprehensive.
-2. Score reasoning. Score Reasoning is an explanation on why the answer provided received the score it did based on the context of the question.
-The user answer is compared to the correct answer
-3. Use the question provided to get context of the subject matter, which can be used to influence the score.
-
-The evaluation must return all data in JSON format with the following categories: 
-1. Score
-2. Score Reasoning
-`
