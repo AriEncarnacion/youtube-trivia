@@ -48,11 +48,19 @@ async function getEvaluation(modelSystemContent: string) {
     ],
   })
 
+  console.log("QuizExaminer::getEvaluation::completion::", completion)
+  console.log(
+    "QuizExaminer::getEvaluation::completion::returnValue::",
+    completion.choices[0].message.tool_calls?.[0].function.arguments,
+  )
+
   return completion.choices[0].message.tool_calls?.[0].function.arguments
 }
 
 export async function POST(request: Request) {
   const data = await request.json()
+
+  console.log("QuizExaminer::Data::", data)
 
   try {
     EvaluationRequest.parse(data)
@@ -70,7 +78,11 @@ export async function POST(request: Request) {
     data.correctAnswer,
   )
 
+  console.log("QuizExaminer::ModelSystemContent::", modelSystemContent)
+
   const completion: string | undefined = await getEvaluation(modelSystemContent)
+
+  console.log("QuizExaminer::mainRequest::completion::", completion)
 
   let response = {}
   try {
