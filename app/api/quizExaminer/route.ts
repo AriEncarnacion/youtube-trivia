@@ -98,6 +98,4 @@ export async function POST(request: Request) {
   })
 }
 
-export const config = {
-  maxDuration: 35,
-}
+export const runtime = "edge"
