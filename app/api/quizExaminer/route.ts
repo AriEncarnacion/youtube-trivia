@@ -19,8 +19,6 @@ async function getEvaluation(modelSystemContent: string) {
         content: modelSystemContent,
       },
     ],
-    // response_format: { type: "json_object" },
-
     tools: [
       {
         type: "function",

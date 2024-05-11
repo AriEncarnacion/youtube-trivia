@@ -1,41 +1,55 @@
+"use client"
 import React from "react"
 import MultipleChoice from "@/components/Quiz/MultipleChoice"
 import FreeAnswer from "@/components/Quiz/FreeAnswer"
-import EvaluationRSC from "./EvaluationRSC"
 
-const MCOptions = ["Avicii", "Skrillex", "Tiesto", "Martin Garrix"]
-const MCCorrect = "Avicii"
-const MCQuestion =
-  "Who is often credited with popularizing the Electronic Dance Music (EDM) genre in the early 2010s and is known for hits like 'Levels' and 'Wake Me Up'?"
+interface MultipleChoiceQuestion {
+  question: string
+  choices: string[]
+  correctChoice: string
+  correctChoiceLetter: string
+}
 
-const FAQuestion = "For what reason did EDM become popular in America?"
-const FACorrect =
-  "Because social media like YouTube and SoundCloud assisted in fuelling interest in electro house and Dubstep, popularizing Skrillex. EDM also became heavily influenced by live events."
+interface FreeAnswerQuestion {
+  question: string
+  answer: string
+}
 
-//"https://www.youtube.com/watch?v=mG8UupGkbGo"
+interface QuizQuestions {
+  freeAnswerQuestions: FreeAnswerQuestion[]
+  multipleChoiceQuestions: MultipleChoiceQuestion[]
+}
 
-export default function Quiz({ quizContent }: any) {
+export default function Quiz({
+  freeAnswerQuestions,
+  multipleChoiceQuestions,
+}: QuizQuestions) {
+  console.log(
+    "QUIZ PAGE Quiz Component :: MC QUESTIONS",
+    multipleChoiceQuestions,
+  )
+  console.log("QUIZ PAGE Quiz Component :: FA QUESTIONS", freeAnswerQuestions)
+
   return (
-    <>
-      <div className="grid gap-10 border rounded-lg p-10">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Quiz Page
-        </h1>
-
+    <div className="grid gap-10 border rounded-lg p-10">
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        Quiz Page
+      </h1>
+      {multipleChoiceQuestions.map((question: MultipleChoiceQuestion, idx) => (
         <MultipleChoice
-          question={MCQuestion}
-          answerOptions={MCOptions}
-          correctAnswer={MCCorrect}
+          key={`mc-question-component-${question}-${idx}`}
+          question={question.question}
+          answerOptions={question.choices}
+          correctAnswer={question.correctChoice}
         />
-        <MultipleChoice
-          question={MCQuestion}
-          answerOptions={MCOptions}
-          correctAnswer={MCCorrect}
+      ))}
+      {freeAnswerQuestions.map((question: FreeAnswerQuestion, idx) => (
+        <FreeAnswer
+          key={`fa-question-component-${question}-${idx}`}
+          question={question.question}
+          correctAnswer={question.answer}
         />
-
-        <FreeAnswer question={FAQuestion} correctAnswer={FACorrect} />
-        <FreeAnswer question={FAQuestion} correctAnswer={FACorrect} />
-      </div>
-    </>
+      ))}
+    </div>
   )
 }

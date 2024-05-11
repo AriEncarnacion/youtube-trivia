@@ -33,15 +33,69 @@ async function fetchQuizContent(script: string): Promise<any> {
       },
       { role: "user", content: script },
     ],
-
-    response_format: { type: "json_object" },
-    logit_bias: {
-      "5061": -100, // \t token
-      "1734": -100, // \n token
-    },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "generator_dummmy_func",
+          parameters: {
+            type: "object",
+            properties: {
+              multipleChoiceQuestions: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    question: {
+                      type: "string",
+                      description:
+                        "The prompt for this multiple choice question.",
+                    },
+                    choices: {
+                      type: "array",
+                      items: {
+                        type: "string",
+                        description:
+                          "4 possible answers (a-d) for this single multiple choice question. Exactly 1 answer must be correct. The choice should have the letter of the question preceeding it, for example: 'a) option here.'",
+                      },
+                    },
+                    correctChoice: {
+                      type: "string",
+                      description:
+                        "The letter and text of the correct answer for this question. Exactly one answer should be listed here. The choice should have the letter of the question preceeding it, for example: 'a) option here.'",
+                    },
+                    correctChoiceLetter: {
+                      type: "string",
+                      description:
+                        "The letter of the correct answer for this question. Exactly one answer should be listed here. The only possibilities for this field are a, b, c, or d.",
+                    },
+                  },
+                },
+              },
+              freeAnswerQuestions: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    question: {
+                      type: "string",
+                      description: "The prompt for this free answer question.",
+                    },
+                    answer: {
+                      type: "string",
+                      description: "The correct answer for this question.",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
   })
 
-  return { quizContent: completion.choices[0].message.content }
+  return completion.choices[0].message.tool_calls?.[0].function.arguments
 }
 
 export async function POST(request: Request) {
@@ -59,18 +113,16 @@ export async function POST(request: Request) {
 
   const { script } = await fetchCaptions(data.videoId)
 
-  const { quizContent } = await fetchQuizContent(script)
+  const completion: string | undefined = await fetchQuizContent(script)
 
-  let quizContentJson = {}
-  try {
-    quizContentJson = JSON.parse(quizContent as string)
-  } catch (err) {
+  if (!completion) {
     return Response.json({
-      error: err,
+      code: 500,
+      error: "Error parsing JSON from OpenAI.",
+    })
+  } else {
+    return Response.json({
+      quizContent: JSON.parse(completion),
     })
   }
-
-  return Response.json({
-    quizContent: quizContentJson,
-  })
 }

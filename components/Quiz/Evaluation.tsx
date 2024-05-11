@@ -16,9 +16,6 @@ export default function Evaluation({
   userAnswer,
   correctAnswer,
 }: EvaluationProps) {
-  const [score, setScore] = React.useState<number>()
-  const [evaluationReason, setEvaluationReason] = React.useState<string>()
-
   const { data, error, isLoading } = useSWR(
     { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
     quizFetcher,

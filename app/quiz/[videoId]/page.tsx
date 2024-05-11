@@ -21,7 +21,12 @@ export default async function QuizPage({
 }: {
   params: { videoId: string }
 }) {
-  const quizContent = await getQuizContent(params.videoId)
+  const { quizContent } = await getQuizContent(params.videoId)
 
-  return <Quiz quizContent={quizContent} />
+  return (
+    <Quiz
+      multipleChoiceQuestions={quizContent.multipleChoiceQuestions}
+      freeAnswerQuestions={quizContent.freeAnswerQuestions}
+    />
+  )
 }
