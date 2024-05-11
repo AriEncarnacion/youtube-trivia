@@ -20,22 +20,6 @@ const formSchema = z.object({
   videoLink: z.string(),
 })
 
-async function fetchCaptions(videoId: string): Promise<any> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/captionScraper`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ videoId: videoId }),
-    },
-  )
-
-  const data = await response.json()
-  return data
-}
-
 const VideoLinkForm: React.FC = () => {
   const router = useRouter()
 
@@ -47,14 +31,12 @@ const VideoLinkForm: React.FC = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    //TODO: validation/formatting for you.tube and m.youtube links
     const url = new URL(values.videoLink)
     const videoId = url.searchParams.get("v")
 
-    router.push("/quiz")
-
-    // fetchCaptions(videoId as string).then((captions) => {
-    //   console.log(captions)
-    // })
+    //TODO: pass query containing videoId
+    router.push(`/quiz/${videoId}`)
   }
 
   return (

@@ -20,12 +20,14 @@ import Evaluation from "./Evaluation"
 interface MultipleChoiceProps {
   question: string
   answerOptions: string[]
+  correctAnswer: string
 }
 
-const MultipleChoice: React.FC<MultipleChoiceProps> = ({
+export default function MultipleChoice({
   question,
   answerOptions,
-}) => {
+  correctAnswer,
+}: MultipleChoiceProps) {
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
@@ -42,8 +44,6 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
-
     setSubmittedAnswer(data.answer)
     setIsSubmitted(true)
   }
@@ -95,14 +95,11 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
 
       {isSubmitted && (
         <Evaluation
-          score={9999}
+          question={question}
           userAnswer={submittedAnswer}
-          correctAnswer={answerOptions[0]}
-          evaluationReason="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
+          correctAnswer={correctAnswer}
         />
       )}
     </div>
   )
 }
-
-export default MultipleChoice

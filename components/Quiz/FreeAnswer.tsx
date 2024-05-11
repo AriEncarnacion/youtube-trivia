@@ -19,13 +19,17 @@ import { useState } from "react"
 
 interface FreeAnswerProps {
   question: string
+  correctAnswer: string
 }
 
 const FormSchema = z.object({
-  answer: z.string(),
+  userAnswer: z.string(),
 })
 
-export function FreeAnswer({ question }: FreeAnswerProps) {
+export default function FreeAnswer({
+  question,
+  correctAnswer,
+}: FreeAnswerProps) {
   const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
@@ -34,8 +38,7 @@ export function FreeAnswer({ question }: FreeAnswerProps) {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2))
-    setSubmittedAnswer(data.answer)
+    setSubmittedAnswer(data.userAnswer)
     setIsSubmitted(true)
   }
 
@@ -45,7 +48,7 @@ export function FreeAnswer({ question }: FreeAnswerProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <FormField
             control={form.control}
-            name="answer"
+            name="userAnswer"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{question}</FormLabel>
@@ -65,14 +68,9 @@ export function FreeAnswer({ question }: FreeAnswerProps) {
 
       {isSubmitted && (
         <Evaluation
-          score={9999}
+          question={question}
           userAnswer={submittedAnswer}
-          correctAnswer={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-          }
-          evaluationReason={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec tortor lacinia, venenatis elit sed, feugiat tellus. Fusce vel lacinia nisl, quis tempus nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec convallis a nulla vitae vehicula. "
-          }
+          correctAnswer={correctAnswer}
         />
       )}
     </div>
