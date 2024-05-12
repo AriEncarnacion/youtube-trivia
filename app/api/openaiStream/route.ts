@@ -1,23 +1,35 @@
-import { z } from "zod";
-import OpenAI from "openai";
 import { quizSystemContent } from "@/ai/systemConfig/quizConfig";
-import fetchCaptions from "@/app/api/handlers/handler";
+import OpenAI from "openai";
+import { z } from "zod";
 
 const openai = new OpenAI();
 
-const VideoRequest = z.object({
-  videoId: z.string(),
+const ScriptRequest = z.object({
+  captions: z.string(),
 });
 
-async function fetchQuizContent(script: string): Promise<any> {
-  const completion = await openai.chat.completions.create({
+export async function POST(request: Request) {
+  const data = await request.json();
+
+  try {
+    ScriptRequest.parse(data);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return Response.json({
+        error: err.errors,
+      });
+    }
+  }
+
+  const stream = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-0125",
+    stream: true,
     messages: [
       {
         role: "system",
         content: quizSystemContent,
       },
-      { role: "user", content: script },
+      { role: "user", content: data.captions },
     ],
     tool_choice: "required",
     tools: [
@@ -81,35 +93,11 @@ async function fetchQuizContent(script: string): Promise<any> {
       },
     ],
   });
-
-  return completion.choices[0].message.tool_calls?.[0].function.arguments;
-}
-
-export async function POST(request: Request) {
-  const data = await request.json();
-
-  try {
-    VideoRequest.parse(data);
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return Response.json({
-        error: err.errors,
-      });
-    }
+  let chunks = [];
+  for await (const chunk of stream) {
+    chunks.push(chunk.choices[0]?.delta?.content || "");
   }
-
-  const { script } = await fetchCaptions(data.videoId);
-
-  const completion: string | undefined = await fetchQuizContent(script);
-
-  if (!completion) {
-    return Response.json({
-      code: 500,
-      error: "Error parsing JSON from OpenAI.",
-    });
-  } else {
-    return Response.json({
-      quizContent: JSON.parse(completion),
-    });
-  }
+  return Response.json({
+    data: chunks,
+  });
 }

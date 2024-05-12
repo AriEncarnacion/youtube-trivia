@@ -1,15 +1,15 @@
-import OpenAI from "openai"
-import { z } from "zod"
-import { buildEvalSystemContent } from "@/ai/systemConfig/quizConfig"
-import { unstable_noStore } from "next/cache"
+import OpenAI from "openai";
+import { z } from "zod";
+import { buildEvalSystemContent } from "@/ai/systemConfig/quizConfig";
+import { unstable_noStore } from "next/cache";
 
-const openai = new OpenAI()
+const openai = new OpenAI();
 
 const EvaluationRequest = z.object({
   question: z.string(),
   userAnswer: z.string(),
   correctAnswer: z.string(),
-})
+});
 
 async function getEvaluation(modelSystemContent: string) {
   const completion = await openai.chat.completions.create({
@@ -47,31 +47,29 @@ async function getEvaluation(modelSystemContent: string) {
         },
       },
     ],
-  })
+  });
 
-  console.log("QuizExaminer::getEvaluation::completion::", completion)
+  console.log("QuizExaminer::getEvaluation::completion::", completion);
   console.log(
     "QuizExaminer::getEvaluation::completion::returnValue::",
     completion.choices[0].message.tool_calls?.[0].function.arguments,
-  )
+  );
 
-  return completion.choices[0].message.tool_calls?.[0].function.arguments
+  return completion.choices[0].message.tool_calls?.[0].function.arguments;
 }
 
 export async function POST(request: Request) {
-  unstable_noStore() //TODO: Remove for prod; doing to test timeout limits
+  const data = await request.json();
 
-  const data = await request.json()
-
-  console.log("QuizExaminer::Data::", data)
+  console.log("QuizExaminer::Data::", data);
 
   try {
-    EvaluationRequest.parse(data)
+    EvaluationRequest.parse(data);
   } catch (err) {
     if (err instanceof z.ZodError) {
       return Response.json({
         error: err.errors,
-      })
+      });
     }
   }
 
@@ -79,26 +77,27 @@ export async function POST(request: Request) {
     data.question,
     data.userAnswer,
     data.correctAnswer,
-  )
+  );
 
-  console.log("QuizExaminer::ModelSystemContent::", modelSystemContent)
+  console.log("QuizExaminer::ModelSystemContent::", modelSystemContent);
 
-  const completion: string | undefined = await getEvaluation(modelSystemContent)
+  const completion: string | undefined =
+    await getEvaluation(modelSystemContent);
 
-  console.log("QuizExaminer::mainRequest::completion::", completion)
+  console.log("QuizExaminer::mainRequest::completion::", completion);
 
-  let response = {}
+  let response = {};
   try {
-    response = JSON.parse(completion as string)
+    response = JSON.parse(completion as string);
   } catch (err) {
     return Response.json({
       error: err,
-    })
+    });
   }
 
   return Response.json({
     response,
-  })
+  });
 }
 
-export const runtime = "edge"
+export const runtime = "edge";

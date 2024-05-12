@@ -1,14 +1,14 @@
-"use client"
-import React, { useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import useSWR from "swr"
-import { quizFetcher } from "./api/quizHandler"
+"use client";
+import React, { useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import useSWR from "swr";
+import { postFetcher } from "@/app/api/handlers/handler";
 
 interface EvaluationProps {
-  question: string
-  userAnswer: string
-  correctAnswer: string
+  question: string;
+  userAnswer: string;
+  correctAnswer: string;
 }
 
 export default function Evaluation({
@@ -18,8 +18,8 @@ export default function Evaluation({
 }: EvaluationProps) {
   const { data, error, isLoading } = useSWR(
     { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
-    quizFetcher,
-  )
+    postFetcher,
+  );
 
   return (
     <Card>
@@ -60,5 +60,5 @@ export default function Evaluation({
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

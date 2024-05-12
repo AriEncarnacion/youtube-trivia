@@ -1,9 +1,9 @@
-"use client"
-import React, { useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+"use client";
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,31 +12,36 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+import fetchCaptions from "@/app/api/handlers/handler";
 
 const formSchema = z.object({
   videoLink: z.string(),
-})
+});
 
-const VideoLinkForm: React.FC = () => {
-  const router = useRouter()
-
+export default function VideoLinkForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       videoLink: "",
     },
-  })
+  });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     //TODO: validation/formatting for you.tube and m.youtube links
-    const url = new URL(values.videoLink)
-    const videoId = url.searchParams.get("v")
+    const url = new URL(values.videoLink);
+    const videoId = url.searchParams.get("v");
 
-    //TODO: pass query containing videoId
-    router.push(`/quiz/${videoId}`)
+    if (!videoId) {
+      console.log("Invalid video link");
+    } else {
+      fetchCaptions(videoId).then(() => {
+        router.push(`/quiz/${videoId}`);
+      });
+    }
   }
 
   return (
@@ -64,7 +69,5 @@ const VideoLinkForm: React.FC = () => {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
-
-export default VideoLinkForm

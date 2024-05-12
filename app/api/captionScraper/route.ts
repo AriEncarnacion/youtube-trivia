@@ -1,35 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from "next"
-import { getSubtitles } from "youtube-captions-scraper"
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getSubtitles } from "youtube-captions-scraper";
 
 interface Caption {
-  start: string
-  dur: string
-  text: string
+  start: string;
+  dur: string;
+  text: string;
 }
 
 async function fetchCaptions(videoId: string) {
-  const captions = await getSubtitles({ videoID: videoId })
-  return captions
+  const captions = await getSubtitles({ videoID: videoId });
+  return captions;
 }
 
 function assembleScript(captions: Caption[]): string {
-  let script = ""
+  let script = "";
 
   captions.forEach((entry) => {
-    script += `${entry.text} `
-  })
+    script += `${entry.text} `;
+  });
 
-  return script
+  return script;
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = await request.json();
 
-  const captions = await fetchCaptions(data.videoId)
+  const captionsArray = await fetchCaptions(data.videoId);
 
-  const script = assembleScript(captions)
+  const captions = assembleScript(captionsArray);
 
   return Response.json({
-    script,
-  })
+    captions,
+  });
 }
