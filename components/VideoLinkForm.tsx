@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
+import { postMethod } from "@/app/api/utils"
+import { v4 as uuidv4 } from "uuid"
 
 const formSchema = z.object({
   videoLink: z.string(),
@@ -30,13 +32,42 @@ const VideoLinkForm: React.FC = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     //TODO: validation/formatting for you.tube and m.youtube links
     const url = new URL(values.videoLink)
     const videoId = url.searchParams.get("v")
+    if (!videoId) {
+      return alert("Invalid YouTube link!")
+    } else {
+      const sessionQuizKey = uuidv4().toString()
 
-    //TODO: pass query containing videoId
-    router.push(`/quiz/${videoId}`)
+      postMethod("/api/add-cookie", {
+        cookieKey: "sessionQuizId",
+        cookieValue: sessionQuizKey,
+      })
+        .then(() => {
+          return postMethod("/api/add-quiz", {
+            uniqueId: sessionQuizKey,
+            // TODO: use actual user key from cookies
+            userKey: "ari",
+          })
+        })
+        .then(() => {
+          return postMethod("/api/captionScraper", { videoId })
+        })
+        .then((captionsResponse) => {
+          // TODO: use actual user key from cookies
+          return postMethod("/api/add-script", {
+            quizId: sessionQuizKey,
+            userKey: "ari",
+            script: captionsResponse.script,
+          })
+        })
+        .then(() => {
+          router.push("/quiz")
+          console.log("done")
+        })
+    }
   }
 
   return (
