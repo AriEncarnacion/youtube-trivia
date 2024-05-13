@@ -1,6 +1,7 @@
 import { z } from "zod"
 import OpenAI from "openai"
 import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
+import { NextResponse } from "next/server"
 
 const openai = new OpenAI()
 
@@ -125,4 +126,10 @@ export async function POST(request: Request) {
       quizContent: JSON.parse(completion),
     })
   }
+}
+
+export const OPTIONS = async (request: Request) => {
+  return new NextResponse("", {
+    status: 200,
+  })
 }
