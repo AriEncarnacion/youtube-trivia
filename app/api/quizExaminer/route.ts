@@ -1,15 +1,15 @@
-import OpenAI from "openai"
-import { z } from "zod"
-import { buildEvalSystemContent } from "@/ai/systemConfig/quizConfig"
-import { NextResponse } from "next/server"
+import OpenAI from "openai";
+import { z } from "zod";
+import { buildEvalSystemContent } from "@/ai/systemConfig/quizConfig";
+import { NextResponse } from "next/server";
 
-const openai = new OpenAI()
+const openai = new OpenAI();
 
 const EvaluationRequest = z.object({
   question: z.string(),
   userAnswer: z.string(),
   correctAnswer: z.string(),
-})
+});
 
 async function getEvaluation(modelSystemContent: string) {
   const completion = await openai.chat.completions.create({
@@ -46,21 +46,21 @@ async function getEvaluation(modelSystemContent: string) {
         },
       },
     ],
-  })
+  });
 
-  return completion.choices[0].message.tool_calls?.[0].function.arguments
+  return completion.choices[0].message.tool_calls?.[0].function.arguments;
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = await request.json();
 
   try {
-    EvaluationRequest.parse(data)
+    EvaluationRequest.parse(data);
   } catch (err) {
     if (err instanceof z.ZodError) {
       return Response.json({
         error: err.errors,
-      })
+      });
     }
   }
 
@@ -68,26 +68,27 @@ export async function POST(request: Request) {
     data.question,
     data.userAnswer,
     data.correctAnswer,
-  )
+  );
 
-  const completion: string | undefined = await getEvaluation(modelSystemContent)
+  const completion: string | undefined =
+    await getEvaluation(modelSystemContent);
 
-  let response = {}
+  let response = {};
   try {
-    response = JSON.parse(completion as string)
+    response = JSON.parse(completion as string);
   } catch (err) {
     return Response.json({
       error: err,
-    })
+    });
   }
 
   return Response.json({
     response,
-  })
+  });
 }
 
 export const OPTIONS = async (request: Request) => {
   return new NextResponse("", {
     status: 200,
-  })
-}
+  });
+};

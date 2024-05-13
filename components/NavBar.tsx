@@ -1,8 +1,8 @@
-import React from "react"
-import ModeToggle from "./ModeToggle"
-import { Button } from "./ui/button"
-import { BookOpenCheck, Home, Youtube } from "lucide-react"
-import NavBarMenu from "./NavBarMenu"
+import React from "react";
+import ModeToggle from "./ModeToggle";
+import { Button } from "./ui/button";
+import { BookOpenCheck, Home, Youtube } from "lucide-react";
+import NavBarMenu from "./NavBarMenu";
 
 const NavBar: React.FC = () => {
   return (
@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

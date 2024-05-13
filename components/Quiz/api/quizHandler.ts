@@ -1,4 +1,4 @@
 interface FetcherConfig {
-  url: string
-  args: any
+  url: string;
+  args: any;
 }

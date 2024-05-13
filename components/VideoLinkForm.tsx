@@ -1,9 +1,9 @@
-"use client"
-import React, { useContext, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+"use client";
+import React, { useContext, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,34 +12,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
-import { postMethod } from "@/app/api/utils"
-import { SessionQuizIdContext } from "@/app/SessionQuizIdContext"
-import { v4 as uuidv4 } from "uuid"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+import { postMethod } from "@/app/api/utils";
+import { SessionQuizIdContext } from "@/app/SessionQuizIdContext";
+import { v4 as uuidv4 } from "uuid";
 
 const formSchema = z.object({
   videoLink: z.string().url("Please enter a valid URL"),
-})
+});
 
 const VideoLinkForm: React.FC = () => {
-  const router = useRouter()
-  const quizId = uuidv4().toString()
+  const router = useRouter();
+  const quizId = uuidv4().toString();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       videoLink: "",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     //TODO: validation/formatting for you.tube and m.youtube links
-    const url = new URL(values.videoLink)
-    const videoId = url.searchParams.get("v")
+    const url = new URL(values.videoLink);
+    const videoId = url.searchParams.get("v");
     if (!videoId) {
-      return alert("Invalid YouTube link!")
+      return alert("Invalid YouTube link!");
     } else {
       postMethod("/api/add-quiz", {
         uniqueId: quizId,
@@ -47,7 +47,7 @@ const VideoLinkForm: React.FC = () => {
         userKey: "ari",
       })
         .then(() => {
-          return postMethod("/api/captionScraper", { videoId })
+          return postMethod("/api/captionScraper", { videoId });
         })
         .then((captionsResponse) => {
           // TODO: use actual user key from cookies
@@ -55,11 +55,11 @@ const VideoLinkForm: React.FC = () => {
             quizId: quizId,
             userKey: "ari",
             script: captionsResponse.script,
-          })
+          });
         })
         .then(() => {
-          router.push(`/quiz/${quizId}`)
-        })
+          router.push(`/quiz/${quizId}`);
+        });
     }
   }
 
@@ -93,7 +93,7 @@ const VideoLinkForm: React.FC = () => {
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default VideoLinkForm
+export default VideoLinkForm;

@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,34 +12,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
-import Evaluation from "./Evaluation"
-import { useState } from "react"
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import Evaluation from "./Evaluation";
+import { useState } from "react";
 
 interface FreeAnswerProps {
-  question: string
-  correctAnswer: string
+  question: string;
+  correctAnswer: string;
 }
 
 const FormSchema = z.object({
   userAnswer: z.string(),
-})
+});
 
 export default function FreeAnswer({
   question,
   correctAnswer,
 }: FreeAnswerProps) {
-  const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const [submittedAnswer, setSubmittedAnswer] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setSubmittedAnswer(data.userAnswer)
-    setIsSubmitted(true)
+    setSubmittedAnswer(data.userAnswer);
+    setIsSubmitted(true);
   }
 
   return (
@@ -62,12 +62,7 @@ export default function FreeAnswer({
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-
-          >
-            Submit
-          </Button>
+          <Button type="submit">Submit</Button>
         </form>
       </Form>
 
@@ -79,5 +74,5 @@ export default function FreeAnswer({
         />
       )}
     </div>
-  )
+  );
 }

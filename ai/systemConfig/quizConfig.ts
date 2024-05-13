@@ -16,7 +16,7 @@ Free answer question requirements:
 
 Response requirements:
 This quiz MUST be returned in JSON format.
-`
+`;
 
 export const buildEvalSystemContent = (
   question: string,
@@ -44,5 +44,5 @@ export const buildEvalSystemContent = (
 
   Here is the correct answer:
   ${correctAnswer}
-  `
-}
+  `;
+};

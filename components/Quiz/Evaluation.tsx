@@ -1,21 +1,21 @@
-"use client"
-import React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import useSWR from "swr"
-import { postFetcher } from "@/app/api/utils"
-import { Skeleton } from "../ui/skeleton"
+"use client";
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import useSWR from "swr";
+import { postFetcher } from "@/app/api/utils";
+import { Skeleton } from "../ui/skeleton";
 
 interface EvaluationProps {
-  question: string
-  userAnswer: string
-  correctAnswer: string
+  question: string;
+  userAnswer: string;
+  correctAnswer: string;
 }
 
 interface cardStyle {
-  cardStyle: string
-  textStyle: string
-  separatorStyle: string
+  cardStyle: string;
+  textStyle: string;
+  separatorStyle: string;
 }
 
 export default function Evaluation({
@@ -23,18 +23,18 @@ export default function Evaluation({
   userAnswer,
   correctAnswer,
 }: EvaluationProps) {
-  const [score, setScore] = React.useState()
+  const [score, setScore] = React.useState();
   const { data, error, isLoading } = useSWR(
     { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
     postFetcher,
-  )
+  );
 
   React.useEffect(() => {
-    if (!isLoading) setScore(data.response.evaluation.score)
-  }, [data])
+    if (!isLoading) setScore(data.response.evaluation.score);
+  }, [data]);
 
   const getCardStyle = (): cardStyle => {
-    if (!score) return { cardStyle: "", textStyle: "", separatorStyle: "" }
+    if (!score) return { cardStyle: "", textStyle: "", separatorStyle: "" };
 
     if (score <= 50)
       return {
@@ -42,22 +42,22 @@ export default function Evaluation({
           "bg-red-50 border-red-300 dark:bg-red-950 dark:border-red-900",
         textStyle: "text-red-800 dark:text-red-400",
         separatorStyle: "bg-red-300 dark:bg-red-900",
-      }
+      };
     else if (score > 50 && score < 76)
       return {
         cardStyle:
           "bg-amber-50 border-amber-300 dark:bg-yellow-950 dark:border-amber-900",
         textStyle: "text-amber-900 dark:text-amber-400",
         separatorStyle: "bg-amber-300 dark:bg-amber-900",
-      }
+      };
     else
       return {
         cardStyle:
           "bg-green-50 border-green-500 dark:bg-green-950 dark:border-green-900",
         textStyle: "text-green-800 dark:text-green-400",
         separatorStyle: "bg-green-500 dark:bg-green-900",
-      }
-  }
+      };
+  };
 
   return (
     <>
@@ -103,5 +103,5 @@ export default function Evaluation({
         </Card>
       )}
     </>
-  )
+  );
 }

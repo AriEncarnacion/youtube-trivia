@@ -1,43 +1,43 @@
-import type { NextApiRequest, NextApiResponse } from "next"
-import { cookies } from "next/headers"
-import { NextResponse } from "next/server"
-import { getSubtitles } from "youtube-captions-scraper"
+import type { NextApiRequest, NextApiResponse } from "next";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { getSubtitles } from "youtube-captions-scraper";
 
 interface Caption {
-  start: string
-  dur: string
-  text: string
+  start: string;
+  dur: string;
+  text: string;
 }
 
 async function fetchCaptions(videoId: string) {
-  const captions = await getSubtitles({ videoID: videoId })
-  return captions
+  const captions = await getSubtitles({ videoID: videoId });
+  return captions;
 }
 
 function assembleScript(captions: Caption[]): string {
-  let script = ""
+  let script = "";
 
   captions.forEach((entry) => {
-    script += `${entry.text} `
-  })
+    script += `${entry.text} `;
+  });
 
-  return script
+  return script;
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = await request.json();
 
-  const captions = await fetchCaptions(data.videoId)
+  const captions = await fetchCaptions(data.videoId);
 
-  const script = assembleScript(captions)
+  const script = assembleScript(captions);
 
-  const res: any = NextResponse.json({ script }, { status: 200 })
+  const res: any = NextResponse.json({ script }, { status: 200 });
 
-  return res
+  return res;
 }
 
 export const OPTIONS = async (request: Request) => {
   return new NextResponse("", {
     status: 200,
-  })
-}
+  });
+};

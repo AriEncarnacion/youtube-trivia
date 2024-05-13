@@ -1,17 +1,17 @@
-"use server"
+"use server";
 
-import { streamObject } from "ai"
-import { openai } from "@ai-sdk/openai"
-import { createStreamableValue } from "ai/rsc"
-import { z } from "zod"
-import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
+import { streamObject } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { createStreamableValue } from "ai/rsc";
+import { z } from "zod";
+import { quizSystemContent } from "@/ai/systemConfig/quizConfig";
 
 export async function generate(scriptInput: string) {
-  "use server"
+  "use server";
 
-  const stream = createStreamableValue()
+  const stream = createStreamableValue();
 
-  ;(async () => {
+  (async () => {
     const { partialObjectStream } = await streamObject({
       model: openai("gpt-4-turbo"),
       system: quizSystemContent,
@@ -52,16 +52,14 @@ export async function generate(scriptInput: string) {
           ),
         }),
       }),
-    })
+    });
 
     for await (const partialObject of partialObjectStream) {
-      stream.update(partialObject)
+      stream.update(partialObject);
     }
 
-    stream.done()
-  })()
+    stream.done();
+  })();
 
-  return { object: stream.value }
+  return { object: stream.value };
 }
-
-

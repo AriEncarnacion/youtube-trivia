@@ -5,9 +5,9 @@ export async function postMethod(apiUrl: string, args: any): Promise<any> {
     },
     method: "POST",
     body: JSON.stringify(args),
-  })
+  });
 
-  return response.json()
+  return response.json();
 }
 
 export async function getMethod(apiUrl: string): Promise<any> {
@@ -16,18 +16,18 @@ export async function getMethod(apiUrl: string): Promise<any> {
       "Content-Type": "application/json",
     },
     method: "GET",
-  })
+  });
 
-  return response.json()
+  return response.json();
 }
 
 interface FetcherConfig {
-  url: string
-  args: any
+  url: string;
+  args: any;
 }
 
 export const postFetcher = async (config: FetcherConfig) => {
-  const { url, args } = config
+  const { url, args } = config;
 
   const options = {
     method: "POST",
@@ -35,15 +35,15 @@ export const postFetcher = async (config: FetcherConfig) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(args),
-  }
+  };
 
   try {
-    const response = await fetch(url, options)
+    const response = await fetch(url, options);
     if (!response.ok) {
-      throw new Error("Network response was not ok: " + response.statusText)
+      throw new Error("Network response was not ok: " + response.statusText);
     }
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    throw new Error("Failed to fetch data: " + error)
+    throw new Error("Failed to fetch data: " + error);
   }
-}
+};

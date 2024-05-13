@@ -1,13 +1,13 @@
-import { z } from "zod"
-import OpenAI from "openai"
-import { quizSystemContent } from "@/ai/systemConfig/quizConfig"
-import { NextResponse } from "next/server"
+import { z } from "zod";
+import OpenAI from "openai";
+import { quizSystemContent } from "@/ai/systemConfig/quizConfig";
+import { NextResponse } from "next/server";
 
-const openai = new OpenAI()
+const openai = new OpenAI();
 
 const VideoRequest = z.object({
   videoId: z.string(),
-})
+});
 
 async function fetchCaptions(videoId: string): Promise<any> {
   const response = await fetch(
@@ -19,9 +19,9 @@ async function fetchCaptions(videoId: string): Promise<any> {
       method: "POST",
       body: JSON.stringify({ videoId: videoId }),
     },
-  )
+  );
 
-  return response.json()
+  return response.json();
 }
 
 async function fetchQuizContent(script: string): Promise<any> {
@@ -94,42 +94,42 @@ async function fetchQuizContent(script: string): Promise<any> {
         },
       },
     ],
-  })
+  });
 
-  return completion.choices[0].message.tool_calls?.[0].function.arguments
+  return completion.choices[0].message.tool_calls?.[0].function.arguments;
 }
 
 export async function POST(request: Request) {
-  const data = await request.json()
+  const data = await request.json();
 
   try {
-    VideoRequest.parse(data)
+    VideoRequest.parse(data);
   } catch (err) {
     if (err instanceof z.ZodError) {
       return Response.json({
         error: err.errors,
-      })
+      });
     }
   }
 
-  const { script } = await fetchCaptions(data.videoId)
+  const { script } = await fetchCaptions(data.videoId);
 
-  const completion: string | undefined = await fetchQuizContent(script)
+  const completion: string | undefined = await fetchQuizContent(script);
 
   if (!completion) {
     return Response.json({
       code: 500,
       error: "Error parsing JSON from OpenAI.",
-    })
+    });
   } else {
     return Response.json({
       quizContent: JSON.parse(completion),
-    })
+    });
   }
 }
 
 export const OPTIONS = async (request: Request) => {
   return new NextResponse("", {
     status: 200,
-  })
-}
+  });
+};

@@ -1,3 +1,3 @@
-import { createContext } from "react"
+import { createContext } from "react";
 
-export const SessionQuizIdContext = createContext<string>("")
+export const SessionQuizIdContext = createContext<string>("");
