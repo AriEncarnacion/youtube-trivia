@@ -19,7 +19,7 @@ import { postMethod } from "@/app/api/utils"
 import { v4 as uuidv4 } from "uuid"
 
 const formSchema = z.object({
-  videoLink: z.string(),
+  videoLink: z.string().url("Please enter a valid URL"),
 })
 
 const VideoLinkForm: React.FC = () => {
@@ -77,7 +77,7 @@ const VideoLinkForm: React.FC = () => {
           name="videoLink"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>YouTube Video Link</FormLabel>
+              <FormLabel>Submit your video link here!</FormLabel>
               <FormControl>
                 <Input
                   placeholder="https://www.youtube.com/watch?v=..."
@@ -91,7 +91,12 @@ const VideoLinkForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          // className="bg-slate-900 dark:text-slate-50 dark:bg-blue-900"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   )

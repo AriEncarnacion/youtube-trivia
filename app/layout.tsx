@@ -1,16 +1,10 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import { Inter as FontSans } from "next/font/google"
-// import { cn } from "@/lib/utils"
+
 import { ThemeProvider } from "@/components/theme-provider"
-// import ModeToggle from "@/components/ModeToggle"
+
 import NavBar from "@/components/NavBar"
 import OpenAI from "openai"
-
-// const fontSans = FontSans({
-//   subsets: ["latin"],
-//   variable: "--font-sans",
-// })
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,15 +18,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body
+        className="
+      bg-gradient-to-b 
+      from-slate-50 
+      to-slate-200
+      dark:bg-gradient-to-b 
+      dark:from-slate-900 
+      dark:to-black
+      "
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+          <div className="sticky top-0">
+            <NavBar />
+          </div>
+          <main className="flex min-h-screen flex-col items-center justify-between p-8">
             {children}
           </main>
         </ThemeProvider>
