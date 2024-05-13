@@ -61,7 +61,12 @@ const VideoLinkForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          // className="bg-slate-900 dark:text-slate-50 dark:bg-blue-900"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   )

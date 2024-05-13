@@ -85,7 +85,7 @@ export default function MultipleChoice({
                     ))}
                   </RadioGroup>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="dark:text-red-500" />
               </FormItem>
             )}
           />
