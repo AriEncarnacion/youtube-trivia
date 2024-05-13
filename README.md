@@ -1,4 +1,5 @@
 <img width="938" alt="youtube-trivia-logo" src="https://github.com/AriEncarnacion/youtube-trivia/assets/48712583/599df377-d5a0-4511-9a00-3f67fc4d118b">
+
 # YoutubeTrivia - [Live Here! :)](https://youtube-trivia.vercel.app/)
 A relatively simple app that creates a quiz for a user and grades it using OpenAI API. This is basically a feature set clone of https://www.fastquiz.app/.
 
