@@ -25,12 +25,6 @@ export default function Quiz({
   freeAnswerQuestions,
   multipleChoiceQuestions,
 }: QuizQuestions) {
-  console.log(
-    "QUIZ PAGE Quiz Component :: MC QUESTIONS",
-    multipleChoiceQuestions,
-  );
-  console.log("QUIZ PAGE Quiz Component :: FA QUESTIONS", freeAnswerQuestions);
-
   return (
     <div
       className="
