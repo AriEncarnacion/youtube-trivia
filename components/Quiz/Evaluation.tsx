@@ -29,7 +29,7 @@ export default function Evaluation({
     postFetcher,
   )
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isLoading) setScore(data.response.evaluation.score)
   }, [data])
 
