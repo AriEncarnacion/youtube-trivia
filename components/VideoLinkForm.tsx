@@ -41,17 +41,11 @@ const VideoLinkForm: React.FC = () => {
     if (!videoId) {
       return alert("Invalid YouTube link!")
     } else {
-      postMethod("/api/add-cookie", {
-        cookieKey: "sessionQuizId",
-        cookieValue: quizId,
+      postMethod("/api/add-quiz", {
+        uniqueId: quizId,
+        // TODO: use actual user key from cookies
+        userKey: "ari",
       })
-        .then(() => {
-          return postMethod("/api/add-quiz", {
-            uniqueId: quizId,
-            // TODO: use actual user key from cookies
-            userKey: "ari",
-          })
-        })
         .then(() => {
           return postMethod("/api/captionScraper", { videoId })
         })
