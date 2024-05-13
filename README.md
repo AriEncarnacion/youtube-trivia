@@ -37,5 +37,5 @@ Big thank you to all the teams that make these great products!
 * [Nextjs 14 (App Router)](https://nextjs.org/docs)
 * [shadcn/ui](https://ui.shadcn.com/)
 * [TailwindCSS](https://tailwindcss.com/)
-* [OpenAI API Native SDK](https://platform.openai.com/docs/overview) (@ OpenAI Please implement a dark mode for the docs... we all want it)
-* [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) (@ Vercel why are these docs pure white..? Is this an AI SDK specific thing? Did I miss a trend?)
+* [OpenAI API Native SDK](https://platform.openai.com/docs/overview) _(@ OpenAI Please implement a dark mode for the docs... we all want it)_
+* [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) _(@ Vercel why are these docs pure white..? Is this an AI SDK specific thing? Did I miss a trend?)_
