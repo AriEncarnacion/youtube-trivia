@@ -17,8 +17,13 @@ If you're curious about any of the implementation in this app, feel free to reac
   * YoutubeTrivia isn't the best grader, but if you put in a comprehensive answer, the score is often high
 * FastQuiz opts for a "correct, partially correct, incorrect" system that makes evaluations muddy and confusing
   * YoutubeTrivia uses a 0-100 score system, color coded based on the score. This gives the user more insight into how their answer performed.
-   
+
+### Known Bugs
+* Request to AI API gets called twice and resolves twice. This might refresh the quiz a few seconds after its initial render.
+  * **Resolution** - Likely due to an improper use of useEffect or improper strategy implemented when researching different ways to implent AI.
+  
 ### Possible Improvements
+ * Error handling !!
  * A ton of code cleanup and standardization of TailwindCSS. I like Tailwind but it does get messy if not organized properly.
  * More transitions for CSS resizing
  * More granular styling for different screen sizes
