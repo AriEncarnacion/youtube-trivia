@@ -1,10 +1,31 @@
 <img width="938" alt="youtube-trivia-logo" src="https://github.com/AriEncarnacion/youtube-trivia/assets/48712583/599df377-d5a0-4511-9a00-3f67fc4d118b">
-
-**_Note: App is only optomized for videos ~5min or less. You can try longer ones, but Vercel's systems may time out. If you get an infinite loading screen, it's probably an unhandled `504 gateway timeout`. Try again with a shorter video._**
 # YoutubeTrivia - [Live Here! :)](https://youtube-trivia.vercel.app/)
 A relatively simple app that creates a quiz for a user and grades it using OpenAI API. This is basically a feature set clone of https://www.fastquiz.app/.
 
-If you're curious about any of the implementation in this app, feel free to reach out to me at my [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/)! (:
+
+**_Note: App is only optomized for videos ~5min or less. You can try longer ones, but Vercel's systems may time out. If you get an infinite loading screen, it's probably an unhandled `504 gateway timeout`. Try again with a shorter video._**
+
+
+If you liked the app or have any questions, feel free to reach out to me on [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/)! (:
+
+
+Here's some example videos I used during testing (copy and paste into form on YoutubeTrivia):
+* [Intro to AWS Amplify | Amazon Web Services]
+```
+https://www.youtube.com/watch?v=wi-L_TtsqC4
+```
+* [React in 100 Seconds]
+```
+https://www.youtube.com/watch?v=Tn6-PIqc4UM
+```
+* [React Native in 100 Seconds]
+```
+https://www.youtube.com/watch?v=gvkqT_Uoahw 
+```
+* [Why you need cookie-based Auth for the Next.js App Router (2024)]
+```
+https://www.youtube.com/watch?v=w3LD0Z73vgU
+```
 
 ### Improvements compared to fastquiz:
 * FastQuiz isn't mobile friendly
@@ -37,7 +58,12 @@ If you're curious about any of the implementation in this app, feel free to reac
 * Quizzes and scripts are saved to DB. Adding full auth functionality and quiz retrieval is a simple extension.
 * Dark/Light/System Mode toggle because my poor developer eyes hurt
 * shadcn/ui and TailwindCSS make for a great combo to just throw things down and make em look nice.
-* NextJS 14 App Router makes setting up routes intu
+
+### Running Locally
+```bash
+npm install
+npm run dev
+```
 
 ### Tech Stack
 Big thank you to all the teams that make these great products!
