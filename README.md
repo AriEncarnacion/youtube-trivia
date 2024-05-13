@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img width="938" alt="youtube-trivia-logo" src="https://github.com/AriEncarnacion/youtube-trivia/assets/48712583/599df377-d5a0-4511-9a00-3f67fc4d118b">
 
-## Getting Started
+# YoutubeTrivia - [Live Here! :)](https://youtube-trivia.vercel.app/)
+A relatively simple app that creates a quiz for a user and grades it using OpenAI API. This is basically a feature set clone of https://www.fastquiz.app/.
 
-First, run the development server:
+If you're curious about any of the implementation in this app, feel free to reach out to me at my [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/) (:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Improvements compared to fastquiz:
+* FastQuiz allows the user to respond in a chat box, but it makes the interface buggy and messy. Use for the chatbox UI is unclear.
+  * YoutubeTrivia provides no chatbox. All AI API calls are made purely in the backend. This keeps UX clear and intuitive.
+* FastQuiz frequently returns multiple choice questions with no correct answers.
+  * YoutubeTrivia leverages OpenAI Functions. This system nearly guarantees the questions will always have one correct answer
+* FastQuiz occasionally evaluates a completely correct free answer question as "partially correct".
+  * YoutubeTrivia isn't the best grader, but if you put in a comprehensive answer, the score is often high
+* FastQuiz opts for a "correct, partially correct, incorrect" system that makes evaluations muddy and confusing
+  * YoutubeTrivia uses a 0-100 score system, color coded based on the score. This gives the user more insight into how their answer performed.
+   
+### Possible Improvements
+ * Saveable sessions via DB, using a non-secure custom key (Like FastQuiz, when2meet, etc)
+ * Add Youtube video embedding to give the user a chance to study before taking the quiz
+ * Improvements to model response speed via streaming (when streamed objects become usable, currently they're unstable at best)
+ * Fine-tuning/prompt engineering to improve model response quality
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+_Note: App is only optomized for videos ~5min or less. You can try longer ones, but Vercel's systems may time out. If you get an infinite loading screen, it's probably an unhandled `504 gateway timeout`. Try again with a shorter video._
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Observational notes while completing this project
+* OpenAI API implemented via Vercel AI SDK. Makes for clean code, but I feel the responses from OpenAI API Native SDK were faster.
+* Quizzes and scripts are saved to DB. Adding full auth functionality and quiz retrieval is a simple extension.
+* Dark/Light/System Mode toggle because my poor developer eyes hurt
+* shadcn/ui and TailwindCSS make for a great combo to just throw things down and make em look nice.
+* NextJS 14 App Router makes setting up routes intu
