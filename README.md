@@ -20,6 +20,8 @@ If you're curious about any of the implementation in this app, feel free to reac
    
 ### Possible Improvements
  * A ton of code cleanup and standardization of TailwindCSS. I like Tailwind but it does get messy if not organized properly.
+ * More transitions for CSS resizing
+ * More granular styling for different screen sizes
  * Saveable sessions via DB, using a non-secure custom key (Like FastQuiz, when2meet, etc)
  * Add Youtube video embedding to give the user a chance to study before taking the quiz
  * Improvements to model response speed via streaming (when streamed objects become usable, currently they're unstable at best)
