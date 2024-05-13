@@ -18,20 +18,19 @@ export async function POST(request: Request) {
       })
     }
   }
-  // const query = `SELECT * FROM scripts WHERE quizId='${"6567d3db-f2ec-4eba-9abd-426585f80626"}';`
-  // console.log("get-script query:", query)
+
   try {
     const script =
       await sql`SELECT * FROM scripts WHERE quizId=${data.sessionQuizId};`
-    console.log("script.rows::", script.rows)
-    console.log("script.rowCount::", script.rowCount)
-    console.log("script.fields::", script.fields)
-
-    return NextResponse.json({ script }, { status: 200 })
+    const res = NextResponse.json({ script }, { status: 200 })
+    res.headers.set("Access-Control-Allow-Origin", "*")
+    return res
   } catch (error) {
-    return NextResponse.json(
+    const res: any = NextResponse.json(
       { body: `${error}::Internal DB Error` },
       { status: 500 },
     )
+    res.headers.set("Access-Control-Allow-Origin", "*")
+    return res
   }
 }

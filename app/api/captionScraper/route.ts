@@ -25,9 +25,6 @@ function assembleScript(captions: Caption[]): string {
 }
 
 export async function POST(request: Request) {
-  const cookiesStore = cookies()
-  const sessionQuizId = cookiesStore.get("sessionQuizId")?.value
-
   const data = await request.json()
 
   const captions = await fetchCaptions(data.videoId)
@@ -35,12 +32,6 @@ export async function POST(request: Request) {
   const script = assembleScript(captions)
 
   const res: any = NextResponse.json({ script }, { status: 200 })
-  res.cookies.set({
-    name: "sessionQuizId",
-    value: sessionQuizId,
-    options: {
-      httpOnly: false,
-    },
-  })
+  res.headers.set("Access-Control-Allow-Origin", "*")
   return res
 }

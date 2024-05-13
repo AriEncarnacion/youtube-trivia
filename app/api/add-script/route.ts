@@ -10,8 +10,6 @@ const addScriptRequest = z.object({
 })
 
 export async function POST(request: Request) {
-  const cookiesStore = cookies()
-  const sessionQuizId = cookiesStore.get("sessionQuizId")?.value
   const data = await request.json()
 
   try {
@@ -31,12 +29,6 @@ export async function POST(request: Request) {
   }
 
   const res: any = NextResponse.json({ status: 200 })
-  res.cookies.set({
-    name: "sessionQuizId",
-    value: sessionQuizId,
-    options: {
-      httpOnly: false,
-    },
-  })
+  res.headers.set("Access-Control-Allow-Origin", "*")
   return res
 }
