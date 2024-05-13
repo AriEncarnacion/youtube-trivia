@@ -9,7 +9,7 @@ A relatively simple app that creates a quiz for a user and grades it using OpenA
 
 If you liked the app or have any questions, feel free to reach out to me on [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/)! (:
 
-
+---
 Here's some example videos I used during testing (copy and paste into form on YoutubeTrivia):
 * [Intro to AWS Amplify | Amazon Web Services]
 ```
@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=gvkqT_Uoahw
 ```
 https://www.youtube.com/watch?v=w3LD0Z73vgU
 ```
-
+---
 ### Improvements compared to fastquiz:
 * FastQuiz isn't mobile friendly
   * YoutubeTrivia is! 
@@ -39,7 +39,7 @@ https://www.youtube.com/watch?v=w3LD0Z73vgU
   * YoutubeTrivia isn't the best grader, but if you put in a comprehensive answer, the score is often high
 * FastQuiz opts for a "correct, partially correct, incorrect" system that makes evaluations muddy and confusing
   * YoutubeTrivia uses a 0-100 score system, color coded based on the score. This gives the user more insight into how their answer performed.
-
+---
 ### Known Bugs
 * Request to AI API gets called twice and resolves twice. This might refresh the quiz a few seconds after its initial render.
   * **Resolution** - Likely due to an improper use of useEffect or improper strategy implemented when researching different ways to implent AI.
@@ -53,19 +53,19 @@ https://www.youtube.com/watch?v=w3LD0Z73vgU
  * Add Youtube video embedding to give the user a chance to study before taking the quiz
  * Improvements to model response speed via streaming (when streamed objects become usable, currently they're unstable at best)
  * Fine-tuning/prompt engineering to improve model response quality
-
+---
 ### Observational notes while completing this project
 * OpenAI API implemented via Vercel AI SDK. Makes for clean code, but I feel the responses from OpenAI API Native SDK were faster.
 * Quizzes and scripts are saved to DB. Adding full auth functionality and quiz retrieval is a simple extension.
 * Dark/Light/System Mode toggle because my poor developer eyes hurt
 * shadcn/ui and TailwindCSS make for a great combo to just throw things down and make em look nice.
-
+---
 ### Running Locally
 ```bash
 npm install
 npm run dev
 ```
-
+---
 ### Tech Stack
 Big thank you to all the teams that make these great products!
 * [Nextjs 14 (App Router)](https://nextjs.org/docs)
