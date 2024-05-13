@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,15 +12,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { useMemo, useState } from "react"
-import Evaluation from "./Evaluation"
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useMemo, useState } from "react";
+import Evaluation from "./Evaluation";
 
 interface MultipleChoiceProps {
-  question: string
-  answerOptions: string[]
-  correctAnswer: string
+  question: string;
+  answerOptions: string[];
+  correctAnswer: string;
 }
 
 export default function MultipleChoice({
@@ -28,24 +28,24 @@ export default function MultipleChoice({
   answerOptions,
   correctAnswer,
 }: MultipleChoiceProps) {
-  const [submittedAnswer, setSubmittedAnswer] = useState<string>("")
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const [submittedAnswer, setSubmittedAnswer] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const FormSchema = useMemo(() => {
     return z.object({
       answer: z.string().refine((value) => answerOptions.includes(value), {
         message: "You need to select a valid option.",
       }),
-    })
-  }, [answerOptions])
+    });
+  }, [answerOptions]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setSubmittedAnswer(data.answer)
-    setIsSubmitted(true)
+    setSubmittedAnswer(data.answer);
+    setIsSubmitted(true);
   }
 
   return (
@@ -101,5 +101,5 @@ export default function MultipleChoice({
         />
       )}
     </div>
-  )
+  );
 }

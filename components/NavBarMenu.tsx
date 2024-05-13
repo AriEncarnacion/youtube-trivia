@@ -1,7 +1,7 @@
-"use client"
-import React, { use } from "react"
-import { Home, Menu, Monitor, Moon, Sun, SunMoon } from "lucide-react"
-import Link from "next/link"
+"use client";
+import React, { use } from "react";
+import { Home, Menu, Monitor, Moon, Sun, SunMoon } from "lucide-react";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,14 +12,14 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "./ui/button"
-import { useTheme } from "next-themes"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 export default function NavBarMenu() {
-  const { setTheme } = useTheme()
-  const router = useRouter()
+  const { setTheme } = useTheme();
+  const router = useRouter();
 
   return (
     <DropdownMenu>
@@ -76,5 +76,5 @@ export default function NavBarMenu() {
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
