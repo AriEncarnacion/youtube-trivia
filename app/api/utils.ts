@@ -1,4 +1,3 @@
-// TODO: generalize to reduce code duplication
 export async function postMethod(apiUrl: string, args: any): Promise<any> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
     headers: {
@@ -6,6 +5,17 @@ export async function postMethod(apiUrl: string, args: any): Promise<any> {
     },
     method: "POST",
     body: JSON.stringify(args),
+  })
+
+  return response.json()
+}
+
+export async function getMethod(apiUrl: string): Promise<any> {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "GET",
   })
 
   return response.json()

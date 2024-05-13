@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres"
+import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
@@ -9,6 +10,8 @@ const addScriptRequest = z.object({
 })
 
 export async function POST(request: Request) {
+  const cookiesStore = cookies()
+  const sessionQuizId = cookiesStore.get("sessionQuizId")?.value
   const data = await request.json()
 
   try {
@@ -27,6 +30,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error }, { status: 500 })
   }
 
-  const scripts = await sql`SELECT * FROM scripts;`
-  return NextResponse.json({ scripts }, { status: 200 })
+  const res: any = NextResponse.json({ status: 200 })
+  res.cookies.set({
+    name: "sessionQuizId",
+    value: sessionQuizId,
+    options: {
+      httpOnly: false,
+    },
+  })
+  return res
 }

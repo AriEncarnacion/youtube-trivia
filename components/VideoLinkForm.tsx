@@ -64,8 +64,7 @@ const VideoLinkForm: React.FC = () => {
           })
         })
         .then(() => {
-          router.push("/quiz")
-          console.log("done")
+          router.push(`/quiz/${sessionQuizKey}`)
         })
     }
   }

@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 import { getSubtitles } from "youtube-captions-scraper"
 
 interface Caption {
@@ -23,13 +25,22 @@ function assembleScript(captions: Caption[]): string {
 }
 
 export async function POST(request: Request) {
+  const cookiesStore = cookies()
+  const sessionQuizId = cookiesStore.get("sessionQuizId")?.value
+
   const data = await request.json()
 
   const captions = await fetchCaptions(data.videoId)
 
   const script = assembleScript(captions)
 
-  return Response.json({
-    script,
+  const res: any = NextResponse.json({ script }, { status: 200 })
+  res.cookies.set({
+    name: "sessionQuizId",
+    value: sessionQuizId,
+    options: {
+      httpOnly: false,
+    },
   })
+  return res
 }

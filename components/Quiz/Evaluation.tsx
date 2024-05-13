@@ -1,9 +1,9 @@
 "use client"
-import React, { useEffect } from "react"
+import React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import useSWR from "swr"
-import { quizFetcher } from "./api/quizHandler"
+import { postFetcher } from "@/app/api/utils"
 
 interface EvaluationProps {
   question: string
@@ -18,7 +18,7 @@ export default function Evaluation({
 }: EvaluationProps) {
   const { data, error, isLoading } = useSWR(
     { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
-    quizFetcher,
+    postFetcher,
   )
 
   return (
