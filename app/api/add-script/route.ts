@@ -29,6 +29,6 @@ export async function POST(request: Request) {
   }
 
   const res: any = NextResponse.json({ status: 200 })
-  res.headers.set("Access-Control-Allow-Origin", "*")
+
   return res
 }

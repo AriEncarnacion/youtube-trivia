@@ -30,7 +30,6 @@ export async function POST(request: Request) {
       { body: `${error}::Internal DB Error` },
       { status: 500 },
     )
-    res.headers.set("Access-Control-Allow-Origin", "*")
     return res
   }
 }

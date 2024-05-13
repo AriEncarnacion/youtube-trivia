@@ -32,6 +32,6 @@ export async function POST(request: Request) {
   const script = assembleScript(captions)
 
   const res: any = NextResponse.json({ script }, { status: 200 })
-  res.headers.set("Access-Control-Allow-Origin", "*")
+
   return res
 }
