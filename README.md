@@ -22,7 +22,7 @@ If you're curious about any of the implementation in this app, feel free to reac
 * Request to AI API gets called twice and resolves twice. This might refresh the quiz a few seconds after its initial render.
   * **Resolution** - Likely due to an improper use of useEffect or improper strategy implemented when researching different ways to implent AI.
   
-### Possible Improvements
+### TODOs
  * Error handling !!
  * A ton of code cleanup and standardization of TailwindCSS. I like Tailwind but it does get messy if not organized properly.
  * More transitions for CSS resizing
