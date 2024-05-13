@@ -10,17 +10,6 @@ export async function postMethod(apiUrl: string, args: any): Promise<any> {
   return response.json();
 }
 
-export async function getMethod(apiUrl: string): Promise<any> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "GET",
-  });
-
-  return response.json();
-}
-
 interface FetcherConfig {
   url: string;
   args: any;

@@ -7,6 +7,7 @@ const addScriptRequest = z.object({
 });
 
 export async function POST(request: Request) {
+  // TODO: verify  and use for userKey implementation
   const data = await request.json();
 
   try {
@@ -28,9 +29,3 @@ export async function POST(request: Request) {
   const users = await sql`SELECT * FROM users;`;
   return NextResponse.json({ users }, { status: 200 });
 }
-
-export const OPTIONS = async (request: Request) => {
-  return new NextResponse("", {
-    status: 200,
-  });
-};

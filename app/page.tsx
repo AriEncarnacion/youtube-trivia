@@ -1,5 +1,4 @@
 import VideoLinkForm from "@/components/VideoLinkForm";
-import { BookOpenCheck, Youtube } from "lucide-react";
 
 export default function Home() {
   //TODO: add userkey to db and grab for session
