@@ -1,14 +1,29 @@
 "use server";
 
-import { streamObject } from "ai";
+import { generateObject } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { createStreamableValue } from "ai/rsc";
-import { z } from "zod";
+
 import { quizSystemContent } from "@/ai/systemConfig/quizConfig";
+import { quizSchema } from "./quizSchema";
 
 export async function generate(scriptInput: string) {
   "use server";
 
+  const { object: quiz } = await generateObject({
+    model: openai("gpt-4-turbo"),
+    system: quizSystemContent,
+    prompt: scriptInput,
+    schema: quizSchema,
+  });
+
+  return { quiz };
+}
+
+// Deprecating this approach until hook that allows for streamed value to be used is available.
+/*export async function generate(scriptInput: string) {
+  "use server";
+
+  
   const stream = createStreamableValue();
 
   (async () => {
@@ -62,4 +77,4 @@ export async function generate(scriptInput: string) {
   })();
 
   return { object: stream.value };
-}
+}*/
