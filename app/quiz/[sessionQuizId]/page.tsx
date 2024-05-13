@@ -10,16 +10,16 @@ export default async function QuizPage({
 }: {
   params: { sessionQuizId: string }
 }) {
-  const result = await postMethod("/api/get-script", {
+  const { script } = await postMethod("/api/get-script", {
     sessionQuizId: params.sessionQuizId,
   })
-  // const { rows } = await result.json()
-  // console.log("QuizPage json:", rows)
+  const captions = script.rows[0].script
+  console.log("get-script result::", captions)
 
   // return <QuizContent sessionQuizId={sessionQuizId} script={"asd"} />
   return (
     <>
-      <pre></pre>
+      <p>{captions}</p>
     </>
   )
 }

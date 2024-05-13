@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { postMethod } from "@/app/api/utils"
+import { SessionQuizIdContext } from "@/app/SessionQuizIdContext"
 import { v4 as uuidv4 } from "uuid"
 
 const formSchema = z.object({
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 const VideoLinkForm: React.FC = () => {
   const router = useRouter()
+  const quizId = uuidv4().toString()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,15 +41,13 @@ const VideoLinkForm: React.FC = () => {
     if (!videoId) {
       return alert("Invalid YouTube link!")
     } else {
-      const sessionQuizKey = uuidv4().toString()
-
       postMethod("/api/add-cookie", {
         cookieKey: "sessionQuizId",
-        cookieValue: sessionQuizKey,
+        cookieValue: quizId,
       })
         .then(() => {
           return postMethod("/api/add-quiz", {
-            uniqueId: sessionQuizKey,
+            uniqueId: quizId,
             // TODO: use actual user key from cookies
             userKey: "ari",
           })
@@ -58,13 +58,13 @@ const VideoLinkForm: React.FC = () => {
         .then((captionsResponse) => {
           // TODO: use actual user key from cookies
           return postMethod("/api/add-script", {
-            quizId: sessionQuizKey,
+            quizId: quizId,
             userKey: "ari",
             script: captionsResponse.script,
           })
         })
         .then(() => {
-          router.push(`/quiz/${sessionQuizKey}`)
+          router.push(`/quiz/${quizId}`)
         })
     }
   }

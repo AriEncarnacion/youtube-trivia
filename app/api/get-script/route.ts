@@ -1,5 +1,4 @@
 import { sql } from "@vercel/postgres"
-import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
@@ -7,8 +6,7 @@ const getScriptRequest = z.object({
   sessionQuizId: z.string().uuid(),
 })
 
-export async function GET(request: Request) {
-  console.log("get-script request:", request)
+export async function POST(request: Request) {
   const data = await request.json()
 
   try {
@@ -20,18 +18,19 @@ export async function GET(request: Request) {
       })
     }
   }
-
-  const query = `SELECT FROM scripts WHERE quizId = '${data.sessionQuizId}';`
-  console.log("get-script query:", query)
-
+  // const query = `SELECT * FROM scripts WHERE quizId='${"6567d3db-f2ec-4eba-9abd-426585f80626"}';`
+  // console.log("get-script query:", query)
   try {
-    const result =
-      await sql`SELECT FROM scripts WHERE quizId = '${data.sessionQuizId}';`
-    console.log("get-script result:", result)
-    return NextResponse.json({ result }, { status: 200 })
+    const script =
+      await sql`SELECT * FROM scripts WHERE quizId=${data.sessionQuizId};`
+    console.log("script.rows::", script.rows)
+    console.log("script.rowCount::", script.rowCount)
+    console.log("script.fields::", script.fields)
+
+    return NextResponse.json({ script }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
-      { body: `${error} ::: KIIUHASDIUHAAAAAAAAAAAAAA` },
+      { body: `${error}::Internal DB Error` },
       { status: 500 },
     )
   }

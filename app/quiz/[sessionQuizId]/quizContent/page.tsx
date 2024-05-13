@@ -12,6 +12,7 @@ interface QuizContentProps {
 
 export default function QuizContent({ sessionQuizId }: QuizContentProps) {
   const [generation, setGeneration] = React.useState<string>("")
+  // const
 
   async function streamData() {
     const { object } = await generate("Asd") //TODO: replace me
