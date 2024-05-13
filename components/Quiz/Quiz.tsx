@@ -32,8 +32,24 @@ export default function Quiz({
   console.log("QUIZ PAGE Quiz Component :: FA QUESTIONS", freeAnswerQuestions);
 
   return (
-    <div className="grid gap-8 bg-slate-100 dark:bg-slate-900 border border-2 border-slate-300 dark:border-slate-800 rounded-lg p-10 lg:p-20 text-slate-900 dark:text-slate-200 ">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <div
+      className="
+        grid 
+        gap-8 
+        bg-slate-100 
+        dark:bg-slate-900 
+        border 
+        border-2 
+        border-slate-300 
+        dark:border-slate-800 
+        rounded-lg 
+        p-10 
+        lg:p-20 
+        text-slate-900 
+        dark:text-slate-200 
+        w-11/12"
+    >
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight">
         Quiz
       </h1>
       {multipleChoiceQuestions.map((question: MultipleChoiceQuestion, idx) => (

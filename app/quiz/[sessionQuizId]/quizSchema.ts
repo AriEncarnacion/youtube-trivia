@@ -34,3 +34,14 @@ export const quizSchema = z.object({
     ),
   }),
 });
+
+export type quizSchemaType = z.infer<typeof quizSchema>;
+
+export const evaluationSchema = z.object({
+  evaluation: z.object({
+    score: z.number().describe("The score of the evaluation, between 0-100."),
+    reasoning: z.string().describe("The reasoning behind the evaluation."),
+  }),
+});
+
+export type evaluationSchemaType = z.infer<typeof evaluationSchema>;

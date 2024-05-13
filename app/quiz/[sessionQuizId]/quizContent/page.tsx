@@ -1,16 +1,14 @@
 "use client";
 import React from "react";
-import { generate } from "../actions";
+import { generateQuiz } from "../actions";
 import Quiz from "@/components/Quiz/Quiz";
-import { quizSchema } from "../quizSchema";
+import { quizSchemaType } from "../quizSchema";
 import { set, z } from "zod";
 import SkeletonQuiz from "@/components/Quiz/SkeletonQuiz";
 
 interface QuizContentProps {
   captions: string;
 }
-
-type quizSchemaType = z.infer<typeof quizSchema>;
 
 export default function QuizContent({ captions }: QuizContentProps) {
   // Unfortunately with this streaming approach there's no easy way to "grab" the generation once the stream is complete.
@@ -38,24 +36,15 @@ export default function QuizContent({ captions }: QuizContentProps) {
   */
 
   const [generation, setGeneration] = React.useState<quizSchemaType>();
-  const [isComplete, setIsComplete] = React.useState<boolean>(false);
 
   async function getGeneratedQuiz() {
-    const { quiz } = await generate(
-      "The sun and the moon are two opposites. One is hot and the other cold. Both are important for earth.",
-    );
+    const { quiz } = await generateQuiz(captions);
     setGeneration(quiz);
   }
 
   React.useEffect(() => {
     getGeneratedQuiz();
   }, []);
-
-  React.useEffect(() => {
-    if (generation) {
-      setIsComplete(true);
-    }
-  }, [generation]);
 
   return (
     <>

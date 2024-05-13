@@ -2,9 +2,13 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import useSWR from "swr";
-import { postFetcher } from "@/app/api/utils";
-import { Skeleton } from "../ui/skeleton";
+import {
+  evaluationSchemaType,
+  quizSchemaType,
+} from "@/app/quiz/[sessionQuizId]/quizSchema";
+import { generateEvaluation } from "@/app/quiz/[sessionQuizId]/actions";
+import { buildEvaluationPrompt } from "@/ai/systemConfig/quizConfig";
+import { set } from "react-hook-form";
 
 interface EvaluationProps {
   question: string;
@@ -23,27 +27,46 @@ export default function Evaluation({
   userAnswer,
   correctAnswer,
 }: EvaluationProps) {
-  const [score, setScore] = React.useState();
-  const { data, error, isLoading } = useSWR(
-    { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
-    postFetcher,
-  );
+  // const [score, setScore] = React.useState();
+  // const { data, error, isLoading } = useSWR(
+  //   { url: "/api/quizExaminer", args: { question, userAnswer, correctAnswer } },
+  //   postFetcher,
+  // );
+
+  // React.useEffect(() => {
+  //   if (!isLoading) setScore(data.response.evaluation.score);
+  // }, [data]);
+
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [generation, setGeneration] = React.useState<evaluationSchemaType>();
+
+  async function getGeneratedEvaluation() {
+    const { evaluation } = await generateEvaluation(
+      buildEvaluationPrompt(question, userAnswer, correctAnswer),
+    );
+    setGeneration(evaluation);
+  }
 
   React.useEffect(() => {
-    if (!isLoading) setScore(data.response.evaluation.score);
-  }, [data]);
+    setIsLoading(true);
+    getGeneratedEvaluation().then(() => setIsLoading(false));
+  }, [userAnswer]); //I know i'm not supposed to do this lol
 
   const getCardStyle = (): cardStyle => {
-    if (!score) return { cardStyle: "", textStyle: "", separatorStyle: "" };
+    if (!generation || isLoading)
+      return { cardStyle: "", textStyle: "", separatorStyle: "" };
 
-    if (score <= 50)
+    if (generation.evaluation.score <= 50)
       return {
         cardStyle:
           "bg-red-50 border-red-300 dark:bg-red-950 dark:border-red-900",
         textStyle: "text-red-800 dark:text-red-400",
         separatorStyle: "bg-red-300 dark:bg-red-900",
       };
-    else if (score > 50 && score < 76)
+    else if (
+      generation.evaluation.score > 50 &&
+      generation.evaluation.score < 76
+    )
       return {
         cardStyle:
           "bg-amber-50 border-amber-300 dark:bg-yellow-950 dark:border-amber-900",
@@ -61,18 +84,13 @@ export default function Evaluation({
 
   return (
     <>
-      {isLoading ? (
-        <Card className="w-11/12 bg-slate-100">
+      {!isLoading ? (
+        <Card className={`w-9/12 ${getCardStyle().cardStyle}`}>
           <CardHeader>
-            <h4 className="animate-pulse">Grading...</h4>
-          </CardHeader>
-        </Card>
-      ) : (
-        <Card className={`w-11/12 ${getCardStyle().cardStyle}`}>
-          <CardHeader>
-            {/* TODO: spice up by giving score colors based on score */}
             <CardTitle className={getCardStyle().textStyle}>
-              {!isLoading && <h4>Score: {data.response.evaluation.score}</h4>}
+              {!isLoading && generation && (
+                <h4>Score: {generation.evaluation.score}</h4>
+              )}
             </CardTitle>
           </CardHeader>
 
@@ -90,16 +108,20 @@ export default function Evaluation({
 
               <Separator className={getCardStyle().separatorStyle} />
               <div>
-                <p>
-                  {isLoading ? (
-                    <h4>Loading...</h4>
-                  ) : (
-                    <>{data.response.evaluation.reasoning}</>
-                  )}
-                </p>
+                {!isLoading && generation && (
+                  <p>{generation.evaluation.reasoning}</p>
+                )}
               </div>
             </div>
           </CardContent>
+        </Card>
+      ) : (
+        <Card className="w-9/12 bg-slate-100 dark:bg-slate-950 dark:border-slate-900">
+          <CardHeader>
+            <h4 className="animate-pulse text-slate-500 dark:text-slate-700">
+              Grading...
+            </h4>
+          </CardHeader>
         </Card>
       )}
     </>

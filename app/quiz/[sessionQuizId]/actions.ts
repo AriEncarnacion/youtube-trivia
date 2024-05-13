@@ -3,10 +3,13 @@
 import { generateObject } from "ai";
 import { openai } from "@ai-sdk/openai";
 
-import { quizSystemContent } from "@/ai/systemConfig/quizConfig";
-import { quizSchema } from "./quizSchema";
+import {
+  evalSystemContent,
+  quizSystemContent,
+} from "@/ai/systemConfig/quizConfig";
+import { evaluationSchema, quizSchema } from "./quizSchema";
 
-export async function generate(scriptInput: string) {
+export async function generateQuiz(scriptInput: string) {
   "use server";
 
   const { object: quiz } = await generateObject({
@@ -78,3 +81,16 @@ export async function generate(scriptInput: string) {
 
   return { object: stream.value };
 }*/
+
+export async function generateEvaluation(prompt: string) {
+  "use server";
+
+  const { object: evaluation } = await generateObject({
+    model: openai("gpt-4-turbo"),
+    system: evalSystemContent,
+    schema: evaluationSchema,
+    prompt: prompt,
+  });
+
+  return { evaluation };
+}
