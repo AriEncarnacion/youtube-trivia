@@ -18,12 +18,14 @@ import { useRouter } from "next/navigation";
 import { postMethod } from "@/app/api/utils";
 import { SessionQuizIdContext } from "@/app/SessionQuizIdContext";
 import { v4 as uuidv4 } from "uuid";
+import SkeletonQuiz from "./Quiz/SkeletonQuiz";
 
 const formSchema = z.object({
   videoLink: z.string().url("Please enter a valid URL"),
 });
 
 const VideoLinkForm: React.FC = () => {
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
   const router = useRouter();
   const quizId = uuidv4().toString();
 
@@ -36,6 +38,8 @@ const VideoLinkForm: React.FC = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     //TODO: validation/formatting for you.tube and m.youtube links
+    setIsSubmitted(true);
+
     const url = new URL(values.videoLink);
     const videoId = url.searchParams.get("v");
     if (!videoId) {
@@ -64,35 +68,41 @@ const VideoLinkForm: React.FC = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="videoLink"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Submit your video link here!</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Must be in youtube.com format, not youtu.be
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type="submit"
-          // className="bg-slate-900 dark:text-slate-50 dark:bg-blue-900"
-        >
-          Submit
-        </Button>
-      </form>
-    </Form>
+    <>
+      {isSubmitted ? (
+        <SkeletonQuiz />
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="videoLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Submit your video link here!</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Must be in youtube.com format, not youtu.be
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              // className="bg-slate-900 dark:text-slate-50 dark:bg-blue-900"
+            >
+              Submit
+            </Button>
+          </form>
+        </Form>
+      )}
+    </>
   );
 };
 
