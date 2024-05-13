@@ -1,5 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "../ui/separator";
 
 export default function SkeletonQuiz() {
   const SkeletonOption = () => {

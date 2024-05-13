@@ -1,7 +1,6 @@
 "use client";
-import React, { use } from "react";
+import React from "react";
 import { Home, Menu, Monitor, Moon, Sun, SunMoon } from "lucide-react";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,

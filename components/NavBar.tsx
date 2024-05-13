@@ -1,7 +1,6 @@
 import React from "react";
 import ModeToggle from "./ModeToggle";
-import { Button } from "./ui/button";
-import { BookOpenCheck, Home, Youtube } from "lucide-react";
+import { BookOpenCheck, Youtube } from "lucide-react";
 import NavBarMenu from "./NavBarMenu";
 
 const NavBar: React.FC = () => {

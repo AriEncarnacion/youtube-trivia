@@ -4,11 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   evaluationSchemaType,
-  quizSchemaType,
 } from "@/app/quiz/[sessionQuizId]/quizSchema";
 import { generateEvaluation } from "@/app/quiz/[sessionQuizId]/actions";
 import { buildEvaluationPrompt } from "@/ai/systemConfig/quizConfig";
-import { set } from "react-hook-form";
 
 interface EvaluationProps {
   question: string;
