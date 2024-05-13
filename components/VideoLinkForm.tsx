@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
-  videoLink: z.string(),
+  videoLink: z.string().url("Please enter a valid URL"),
 })
 
 const VideoLinkForm: React.FC = () => {
@@ -47,7 +47,7 @@ const VideoLinkForm: React.FC = () => {
           name="videoLink"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>YouTube Video Link</FormLabel>
+              <FormLabel>Submit your video link here!</FormLabel>
               <FormControl>
                 <Input
                   placeholder="https://www.youtube.com/watch?v=..."

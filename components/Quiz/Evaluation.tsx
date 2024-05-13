@@ -62,13 +62,13 @@ export default function Evaluation({
   return (
     <>
       {isLoading ? (
-        <Card className="w-96 bg-slate-100">
+        <Card className="w-11/12 bg-slate-100">
           <CardHeader>
             <h4 className="animate-pulse">Grading...</h4>
           </CardHeader>
         </Card>
       ) : (
-        <Card className={`w-96 ${getCardStyle().cardStyle}`}>
+        <Card className={`w-11/12 ${getCardStyle().cardStyle}`}>
           <CardHeader>
             {/* TODO: spice up by giving score colors based on score */}
             <CardTitle className={getCardStyle().textStyle}>
