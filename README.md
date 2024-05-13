@@ -4,9 +4,11 @@
 # YoutubeTrivia - [Live Here! :)](https://youtube-trivia.vercel.app/)
 A relatively simple app that creates a quiz for a user and grades it using OpenAI API. This is basically a feature set clone of https://www.fastquiz.app/.
 
-If you're curious about any of the implementation in this app, feel free to reach out to me at my [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/) (:
+If you're curious about any of the implementation in this app, feel free to reach out to me at my [LinkedIn](https://www.linkedin.com/in/ariel-encarnacion/)! (:
 
 ### Improvements compared to fastquiz:
+* FastQuiz isn't mobile friendly
+  * YoutubeTrivia is! 
 * FastQuiz allows the user to respond in a chat box, but it makes the interface buggy and messy. Use for the chatbox UI is unclear.
   * YoutubeTrivia provides no chatbox. All AI API calls are made purely in the backend. This keeps UX clear and intuitive.
 * FastQuiz frequently returns multiple choice questions with no correct answers.
@@ -17,11 +19,11 @@ If you're curious about any of the implementation in this app, feel free to reac
   * YoutubeTrivia uses a 0-100 score system, color coded based on the score. This gives the user more insight into how their answer performed.
    
 ### Possible Improvements
+ * A ton of code cleanup and standardization of TailwindCSS. I like Tailwind but it does get messy if not organized properly.
  * Saveable sessions via DB, using a non-secure custom key (Like FastQuiz, when2meet, etc)
  * Add Youtube video embedding to give the user a chance to study before taking the quiz
  * Improvements to model response speed via streaming (when streamed objects become usable, currently they're unstable at best)
  * Fine-tuning/prompt engineering to improve model response quality
-
 
 ### Observational notes while completing this project
 * OpenAI API implemented via Vercel AI SDK. Makes for clean code, but I feel the responses from OpenAI API Native SDK were faster.
@@ -29,3 +31,11 @@ If you're curious about any of the implementation in this app, feel free to reac
 * Dark/Light/System Mode toggle because my poor developer eyes hurt
 * shadcn/ui and TailwindCSS make for a great combo to just throw things down and make em look nice.
 * NextJS 14 App Router makes setting up routes intu
+
+### Tech Stack
+Big thank you to all the teams that make these great products!
+* [Nextjs 14 (App Router)](https://nextjs.org/docs)
+* [shadcn/ui](https://ui.shadcn.com/)
+* [TailwindCSS](https://tailwindcss.com/)
+* [OpenAI API Native SDK](https://platform.openai.com/docs/overview) (@ OpenAI Please implement a dark mode for the docs... we all want it)
+* [Vercel's AI SDK](https://sdk.vercel.ai/docs/introduction) (@ Vercel why are these docs pure white..? Is this an AI SDK specific thing? Did I miss a trend?)
