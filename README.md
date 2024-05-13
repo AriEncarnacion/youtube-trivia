@@ -1,5 +1,6 @@
 <img width="938" alt="youtube-trivia-logo" src="https://github.com/AriEncarnacion/youtube-trivia/assets/48712583/599df377-d5a0-4511-9a00-3f67fc4d118b">
 
+**_Note: App is only optomized for videos ~5min or less. You can try longer ones, but Vercel's systems may time out. If you get an infinite loading screen, it's probably an unhandled `504 gateway timeout`. Try again with a shorter video._**
 # YoutubeTrivia - [Live Here! :)](https://youtube-trivia.vercel.app/)
 A relatively simple app that creates a quiz for a user and grades it using OpenAI API. This is basically a feature set clone of https://www.fastquiz.app/.
 
@@ -21,7 +22,6 @@ If you're curious about any of the implementation in this app, feel free to reac
  * Improvements to model response speed via streaming (when streamed objects become usable, currently they're unstable at best)
  * Fine-tuning/prompt engineering to improve model response quality
 
-_Note: App is only optomized for videos ~5min or less. You can try longer ones, but Vercel's systems may time out. If you get an infinite loading screen, it's probably an unhandled `504 gateway timeout`. Try again with a shorter video._
 
 ### Observational notes while completing this project
 * OpenAI API implemented via Vercel AI SDK. Makes for clean code, but I feel the responses from OpenAI API Native SDK were faster.
